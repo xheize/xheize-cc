@@ -383,7 +383,34 @@
 		flex-shrink: 0;
 	}
 
+	/* 태블릿 디바이스 (768px ~ 1024px) */
+	@media (max-width: 1024px) and (min-width: 769px) {
+		.content {
+			grid-template-columns: 1fr;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 0 32px 32px;
+		}
+
+		.mat-display-1 {
+			font-size: 2.5rem;
+		}
+
+		.mat-headline {
+			font-size: 1.35rem;
+		}
+	}
+
+	/* 모바일 디바이스 (< 768px) */
 	@media (max-width: 768px) {
+		.app-bar {
+			padding: 12px 16px;
+		}
+
+		.hero {
+			padding: 48px 16px;
+		}
+
 		.mat-display-1 {
 			font-size: 2rem;
 		}
@@ -394,6 +421,58 @@
 
 		.content {
 			grid-template-columns: 1fr;
+			padding: 0 16px 24px;
+			gap: 16px;
+		}
+
+		.mat-card-content {
+			padding: 20px;
+		}
+
+		.mat-button {
+			height: 56px;
+			font-size: 1rem;
+		}
+
+		.contact-item {
+			padding: 12px;
+		}
+
+		.mat-info-box {
+			padding: 12px;
+		}
+	}
+
+	/* 작은 모바일 디바이스 (< 480px) */
+	@media (max-width: 480px) {
+		.mat-display-1 {
+			font-size: 1.75rem;
+		}
+
+		.mat-headline {
+			font-size: 1.1rem;
+		}
+
+		.hero {
+			padding: 32px 16px;
+		}
+
+		.mat-card-content {
+			padding: 16px;
+		}
+
+		.mat-title {
+			font-size: 1.1rem;
+		}
+
+		.mat-input {
+			padding: 10px;
+		}
+
+		.contact-item {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
 		}
 	}
 </style>

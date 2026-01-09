@@ -316,7 +316,41 @@
 		margin-top: 8px;
 	}
 
+	/* 태블릿 디바이스 (768px ~ 1024px) */
+	@media (max-width: 1024px) and (min-width: 769px) {
+		.content {
+			grid-template-columns: repeat(2, 1fr);
+			padding: 0 32px 32px;
+		}
+
+		.mat-display-1 {
+			font-size: 2.5rem;
+		}
+
+		.mat-headline {
+			font-size: 1.35rem;
+		}
+	}
+
+	/* 모바일 디바이스 (< 768px) */
 	@media (max-width: 768px) {
+		.app-bar {
+			flex-direction: column;
+			align-items: stretch;
+			padding: 12px 16px;
+			gap: 8px;
+		}
+
+		.back-button,
+		.logout-button {
+			justify-content: center;
+			width: 100%;
+		}
+
+		.hero {
+			padding: 48px 16px;
+		}
+
 		.mat-display-1 {
 			font-size: 2rem;
 		}
@@ -327,16 +361,74 @@
 
 		.content {
 			grid-template-columns: 1fr;
+			padding: 0 16px 24px;
+			gap: 16px;
 		}
 
-		.app-bar {
-			flex-direction: column;
-			align-items: stretch;
+		.mat-card-content {
+			padding: 20px;
 		}
 
-		.back-button,
-		.logout-button {
-			justify-content: center;
+		.mat-card-header {
+			padding: 40px 20px;
+		}
+
+		.avatar-large {
+			width: 100px;
+			height: 100px;
+		}
+
+		.avatar-large .material-icons {
+			font-size: 64px;
+		}
+
+		.info-item {
+			padding: 12px;
+		}
+
+		.status-chip {
+			padding: 10px 14px;
+		}
+	}
+
+	/* 작은 모바일 디바이스 (< 480px) */
+	@media (max-width: 480px) {
+		.mat-display-1 {
+			font-size: 1.75rem;
+		}
+
+		.mat-headline {
+			font-size: 1.1rem;
+		}
+
+		.hero {
+			padding: 32px 16px;
+		}
+
+		.mat-card-content {
+			padding: 16px;
+		}
+
+		.mat-card-header {
+			padding: 32px 16px;
+		}
+
+		.avatar-large {
+			width: 80px;
+			height: 80px;
+		}
+
+		.avatar-large .material-icons {
+			font-size: 48px;
+		}
+
+		.mat-title {
+			font-size: 1.1rem;
+		}
+
+		.info-label,
+		.info-value {
+			font-size: 0.85rem;
 		}
 	}
 </style>

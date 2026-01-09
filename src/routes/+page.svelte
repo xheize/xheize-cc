@@ -291,7 +291,36 @@
 		font-size: 18px;
 	}
 
+	/* 태블릿 디바이스 (768px ~ 1024px) */
+	@media (max-width: 1024px) and (min-width: 769px) {
+		.container {
+			padding: 0 32px;
+		}
+
+		.content {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+		}
+
+		.mat-display-1 {
+			font-size: 2.5rem;
+		}
+
+		.mat-headline {
+			font-size: 1.35rem;
+		}
+	}
+
+	/* 모바일 디바이스 (< 768px) */
 	@media (max-width: 768px) {
+		main {
+			padding: 16px;
+		}
+
+		.hero {
+			padding: 32px 16px;
+		}
+
 		.mat-display-1 {
 			font-size: 2rem;
 		}
@@ -302,6 +331,15 @@
 
 		.content {
 			grid-template-columns: 1fr;
+			gap: 16px;
+		}
+
+		.mat-card {
+			border-radius: 8px;
+		}
+
+		.mat-card-content {
+			padding: 20px;
 		}
 
 		.button-group {
@@ -311,6 +349,39 @@
 		.mat-button {
 			width: 100%;
 			justify-content: center;
+			height: 56px;
+			font-size: 1rem;
+		}
+
+		.mat-list-item {
+			padding: 10px 0;
+		}
+	}
+
+	/* 작은 모바일 디바이스 (< 480px) */
+	@media (max-width: 480px) {
+		.mat-display-1 {
+			font-size: 1.75rem;
+		}
+
+		.mat-headline {
+			font-size: 1.1rem;
+		}
+
+		.hero {
+			padding: 24px 12px;
+		}
+
+		.mat-card-content {
+			padding: 16px;
+		}
+
+		.mat-title {
+			font-size: 1.1rem;
+		}
+
+		.mat-body-1 {
+			font-size: 0.95rem;
 		}
 	}
 </style>
