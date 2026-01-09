@@ -7,7 +7,7 @@ WORKDIR /app
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
-# 의존성 설치
+# 의존성 설치 (빌드 단계에서는 모든 의존성 필요)
 RUN npm ci
 
 # 소스 코드 복사
@@ -25,7 +25,6 @@ WORKDIR /app
 # 빌드된 파일과 필요한 파일만 복사
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.svelte-kit ./.svelte-kit
 
 # 프로덕션 의존성만 설치
 RUN npm ci --omit=dev

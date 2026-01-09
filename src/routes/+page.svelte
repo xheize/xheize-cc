@@ -9,162 +9,285 @@
 </script>
 
 <main>
-	<div class="hero">
-		<h1>Welcome to Xheize's Personal Page</h1>
-		<p class="subtitle">Built with SvelteKit SSR ⚡</p>
+	<div class="container">
+		<div class="hero">
+			<h1 class="mat-display-1">Welcome to Xheize's Personal Page</h1>
+			<p class="mat-headline">Built with SvelteKit SSR</p>
+		</div>
+
+		<div class="content">
+			<div class="mat-card">
+				<div class="mat-card-content">
+					<h2 class="mat-title">About This Site</h2>
+					<p class="mat-body-1">
+						This is a server-side rendered (SSR) personal page built with SvelteKit. 
+						The page is rendered on the server first, then hydrated on the client for interactivity.
+					</p>
+					{#if mounted}
+						<div class="mat-chip success">
+							<span class="material-icons">check_circle</span>
+							Client-side hydration complete!
+						</div>
+					{:else}
+						<div class="mat-chip">
+							<span class="material-icons">hourglass_empty</span>
+							Loading client-side code...
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<div class="mat-card">
+				<div class="mat-card-content">
+					<h2 class="mat-title">Features</h2>
+					<ul class="mat-list">
+						<li class="mat-list-item">
+							<span class="material-icons">bolt</span>
+							<span>Server-Side Rendering (SSR)</span>
+						</li>
+						<li class="mat-list-item">
+							<span class="material-icons">palette</span>
+							<span>Modern Svelte 5 with Runes</span>
+						</li>
+						<li class="mat-list-item">
+							<span class="material-icons">swap_horiz</span>
+							<span>Fast Page Transitions</span>
+						</li>
+						<li class="mat-list-item">
+							<span class="material-icons">devices</span>
+							<span>Responsive Design</span>
+						</li>
+						<li class="mat-list-item">
+							<span class="material-icons">rocket_launch</span>
+							<span>Optimized Performance</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="mat-card">
+				<div class="mat-card-content">
+					<h2 class="mat-title">Navigation</h2>
+					<div class="button-group">
+						<a href="/about" class="mat-button mat-raised-button mat-primary">
+							<span class="material-icons">person</span>
+							About Me
+						</a>
+						<a href="/contact" class="mat-button mat-raised-button mat-accent">
+							<span class="material-icons">email</span>
+							Contact
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-
-	<section class="content">
-		<div class="card">
-			<h2>About This Site</h2>
-			<p>
-				This is a server-side rendered (SSR) personal page built with SvelteKit. 
-				The page is rendered on the server first, then hydrated on the client for interactivity.
-			</p>
-			{#if mounted}
-				<p class="status success">✓ Client-side hydration complete!</p>
-			{:else}
-				<p class="status">Loading client-side code...</p>
-			{/if}
-		</div>
-
-		<div class="card">
-			<h2>Features</h2>
-			<ul>
-				<li>⚡ Server-Side Rendering (SSR)</li>
-				<li>🎨 Modern Svelte 5 with Runes</li>
-				<li>🔄 Fast Page Transitions</li>
-				<li>📱 Responsive Design</li>
-				<li>🚀 Optimized Performance</li>
-			</ul>
-		</div>
-
-		<div class="card">
-			<h2>Navigation</h2>
-			<nav>
-				<a href="/about">About Me</a>
-				<a href="/contact">Contact</a>
-			</nav>
-		</div>
-	</section>
 </main>
+
+<svelte:head>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</svelte:head>
 
 <style>
 	:global(body) {
 		margin: 0;
 		padding: 0;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		font-family: 'Roboto', sans-serif;
+		background: #f5f5f5;
 		min-height: 100vh;
 	}
 
 	main {
+		min-height: 100vh;
+		background: linear-gradient(180deg, #1976d2 0%, #1565c0 100%);
+		padding: 24px;
+	}
+
+	.container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 2rem;
 	}
 
 	.hero {
 		text-align: center;
 		color: white;
-		padding: 4rem 2rem;
-		margin-bottom: 2rem;
+		padding: 48px 24px;
+		margin-bottom: 32px;
 	}
 
-	h1 {
+	.mat-display-1 {
 		font-size: 3rem;
-		margin: 0 0 1rem 0;
-		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+		font-weight: 400;
+		line-height: 1.2;
+		margin: 0 0 16px 0;
+		letter-spacing: -0.02em;
 	}
 
-	.subtitle {
+	.mat-headline {
 		font-size: 1.5rem;
-		opacity: 0.9;
+		font-weight: 400;
+		line-height: 1.3;
 		margin: 0;
+		opacity: 0.9;
 	}
 
 	.content {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 24px;
 	}
 
-	.card {
+	.mat-card {
 		background: white;
-		border-radius: 12px;
-		padding: 2rem;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-		transition: transform 0.3s ease;
+		border-radius: 4px;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.1);
+		transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		overflow: hidden;
 	}
 
-	.card:hover {
-		transform: translateY(-5px);
+	.mat-card:hover {
+		box-shadow: 0 4px 8px rgba(0,0,0,0.15), 0 8px 16px rgba(0,0,0,0.15);
 	}
 
-	.card h2 {
-		margin-top: 0;
-		color: #667eea;
+	.mat-card-content {
+		padding: 24px;
 	}
 
-	ul {
+	.mat-title {
+		font-size: 1.25rem;
+		font-weight: 500;
+		line-height: 1.6;
+		margin: 0 0 16px 0;
+		color: rgba(0,0,0,0.87);
+	}
+
+	.mat-body-1 {
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: rgba(0,0,0,0.6);
+		margin: 0 0 16px 0;
+	}
+
+	.mat-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 12px;
+		background: #e0e0e0;
+		border-radius: 16px;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: rgba(0,0,0,0.87);
+	}
+
+	.mat-chip.success {
+		background: #c8e6c9;
+		color: #2e7d32;
+	}
+
+	.mat-chip .material-icons {
+		font-size: 18px;
+	}
+
+	.mat-list {
 		list-style: none;
 		padding: 0;
+		margin: 0;
 	}
 
-	ul li {
-		padding: 0.5rem 0;
-		border-bottom: 1px solid #eee;
+	.mat-list-item {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 12px 0;
+		color: rgba(0,0,0,0.87);
+		border-bottom: 1px solid rgba(0,0,0,0.12);
 	}
 
-	ul li:last-child {
+	.mat-list-item:last-child {
 		border-bottom: none;
 	}
 
-	nav {
+	.mat-list-item .material-icons {
+		color: #1976d2;
+		font-size: 24px;
+	}
+
+	.button-group {
 		display: flex;
-		gap: 1rem;
+		gap: 16px;
 		flex-wrap: wrap;
 	}
 
-	nav a {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		color: white;
+	.mat-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0 16px;
+		height: 36px;
+		border-radius: 4px;
+		font-size: 0.875rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.09em;
 		text-decoration: none;
-		border-radius: 8px;
-		transition: transform 0.2s ease;
+		cursor: pointer;
+		transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		border: none;
 	}
 
-	nav a:hover {
-		transform: scale(1.05);
+	.mat-raised-button {
+		box-shadow: 0 2px 4px rgba(0,0,0,0.14), 0 2px 4px rgba(0,0,0,0.12);
 	}
 
-	.status {
-		margin-top: 1rem;
-		padding: 0.75rem;
-		background: #f0f0f0;
-		border-radius: 6px;
-		font-size: 0.9rem;
+	.mat-raised-button:hover {
+		box-shadow: 0 4px 8px rgba(0,0,0,0.16), 0 4px 8px rgba(0,0,0,0.14);
 	}
 
-	.status.success {
-		background: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
+	.mat-primary {
+		background: #1976d2;
+		color: white;
+	}
+
+	.mat-primary:hover {
+		background: #1565c0;
+	}
+
+	.mat-accent {
+		background: #ff4081;
+		color: white;
+	}
+
+	.mat-accent:hover {
+		background: #f50057;
+	}
+
+	.mat-button .material-icons {
+		font-size: 18px;
 	}
 
 	@media (max-width: 768px) {
-		h1 {
+		.mat-display-1 {
 			font-size: 2rem;
 		}
 
-		.subtitle {
-			font-size: 1.2rem;
+		.mat-headline {
+			font-size: 1.25rem;
 		}
 
 		.content {
 			grid-template-columns: 1fr;
+		}
+
+		.button-group {
+			flex-direction: column;
+		}
+
+		.mat-button {
+			width: 100%;
+			justify-content: center;
 		}
 	}
 </style>
