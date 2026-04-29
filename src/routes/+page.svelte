@@ -1,9 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	
 	let mounted = $state(false);
-	let session = $derived($page.data.session);
 	
 	onMount(() => {
 		mounted = true;
@@ -79,17 +77,10 @@
 							<span class="material-icons">email</span>
 							Contact
 						</a>
-						{#if session?.user}
-							<a href="/profile" class="mat-button mat-raised-button mat-primary">
-								<span class="material-icons">account_circle</span>
-								My Profile (SSO)
-							</a>
-						{:else}
-							<a href="/auth/signin" class="mat-button mat-outlined-button">
-								<span class="material-icons">login</span>
-								Sign In (SSO)
-							</a>
-						{/if}
+						<a href="/profile" class="mat-button mat-raised-button mat-primary">
+							<span class="material-icons">account_circle</span>
+							My Profile
+						</a>
 					</div>
 				</div>
 			</div>
@@ -275,16 +266,6 @@
 
 	.mat-accent:hover {
 		background: #f50057;
-	}
-
-	.mat-outlined-button {
-		background: transparent;
-		color: #1976d2;
-		border: 2px solid #1976d2;
-	}
-
-	.mat-outlined-button:hover {
-		background: rgba(25, 118, 210, 0.04);
 	}
 
 	.mat-button .material-icons {
