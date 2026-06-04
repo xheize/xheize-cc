@@ -40,9 +40,9 @@ const authConfig = {
 		// 세션 콜백 - 클라이언트에 전달할 세션 데이터 설정
 		async session({ session, token }) {
 			if (token && session.user) {
-				session.user.id = token.id;
-				session.user.email = token.email;
-				session.user.name = token.name;
+				session.user.id = /** @type {any} */ (token.id);
+				session.user.email = /** @type {any} */ (token.email);
+				session.user.name = /** @type {any} */ (token.name);
 			}
 			return session;
 		},

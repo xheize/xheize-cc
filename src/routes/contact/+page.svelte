@@ -8,6 +8,9 @@
 		mounted = true;
 	});
 	
+	/**
+	 * @param {SubmitEvent} event
+	 */
 	function handleSubmit(event) {
 		event.preventDefault();
 		formSubmitted = true;
