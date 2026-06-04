@@ -1,0 +1,18 @@
+when:
+  - event: [pull_request, push]
+
+steps:
+  - name: install
+    image: node:20-alpine
+    commands:
+      - npm ci
+
+  - name: check
+    image: node:20-alpine
+    commands:
+      - npm run check
+
+  - name: build
+    image: node:20-alpine
+    commands:
+      - npm run build
