@@ -1,0 +1,26 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+// Svelte Colors - Green Theme
+@use '@material/theme/index' as theme with ($primary: #2e7d32, // Green 800
+  $secondary: #43a047, // Green 600
+  $surface: #ffffff,
+  $background: #f5f5f5,
+  $error: color-palette.$red-900,
+  $on-primary: #ffffff,
+  $on-secondary: #ffffff);
+
+html,
+body {
+  background-color: theme.$background;
+  color: theme.$on-surface;
+}
+
+a {
+  color: theme.$primary;
+}
+
+a:visited {
+  color: color.scale(theme.$primary, $lightness: -10%);
+}
