@@ -2,7 +2,7 @@
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
 	
-	let clientTime = $state(null);
+	let clientTime = $state(/** @type {string | null} */ (null));
 	
 	// 이 코드는 하이드레이션 후 클라이언트에서만 실행됩니다
 	$effect(() => {
