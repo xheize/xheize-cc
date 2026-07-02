@@ -9,6 +9,7 @@
 
 	let inputValue = $state("");
 	let isTyping = $state(false);
+	/** @type {HTMLDivElement | null} */
 	let chatContainer = $state(null);
 
 	let messages = $state([
@@ -44,6 +45,16 @@
 	onMount(() => {
 		scrollToBottom();
 	});
+
+	/**
+	 * Send a suggested question immediately
+	 * @param {string} question
+	 */
+	function sendSuggestedQuestion(question) {
+		if (isTyping) return;
+		inputValue = question;
+		handleSend();
+	}
 
 	/**
 	 * Handle sending message

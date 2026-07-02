@@ -10,6 +10,7 @@
 
 	// Filter and Selection states
 	let selectedCategory = $state("All");
+	/** @type {number | null} */
 	let selectedPostId = $state(null);
 
 	const categories = ["All", "Frontend", "DevOps", "Infrastructure"];

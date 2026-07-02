@@ -3,6 +3,7 @@
 
 	// Svelte 5 Runes for state management
 	let activeFilter = $state("all");
+	/** @type {string | null} */
 	let selectedTechId = $state(null);
 	let y = $state(0);
 	let isScrolled = $derived(y > 20);
@@ -11,6 +12,9 @@
 		name: "Xheize",
 		github: "https://github.com/xheize",
 		avatar: "/avatar.png",
+		title: "DevOps & Infrastructure Engineer",
+		bio: "가상화와 컨테이너 환경을 활용해 확장 가능하고 신뢰할 수 있는 인프라를 설계하고 구축하는 것을 즐깁니다.",
+		status: "Available for new projects"
 	};
 
 	const frameworks = [
@@ -187,9 +191,11 @@
 	 * @param {Event} e
 	 */
 	function handleAvatarError(e) {
-		const target = e.currentTarget;
-		target.src =
-			"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d0bcff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.89-6.07-2.44C7.45 16.27 9.53 15.5 12 15s4.55.77 6.07 2.56C16.43 19.11 14.03 20 12 20z'/%3E%3C/svg%3E";
+		const target = /** @type {HTMLImageElement} */ (e.currentTarget);
+		if (target) {
+			target.src =
+				"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d0bcff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.89-6.07-2.44C7.45 16.27 9.53 15.5 12 15s4.55.77 6.07 2.56C16.43 19.11 14.03 20 12 20z'/%3E%3C/svg%3E";
+		}
 	}
 </script>
 
