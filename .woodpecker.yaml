@@ -1,18 +1,42 @@
+variables:
+  - &nodejs_image 'node:20-alpine'
+  - &buildkit_image 'moby/buildkit:v0.31.0'
+
 when:
   - event: [pull_request, push]
 
 steps:
-  - name: install
-    image: node:20-alpine
+  - name: install-lint-check
+    image: *nodejs_image
     commands:
       - npm ci
-
-  - name: check
-    image: node:20-alpine
-    commands:
       - npm run check
-
-  - name: build
-    image: node:20-alpine
+    when:
+      event: [push, pull_request]
+      branch: [dev]
+      
+  - name: build-and-push-nightly
+    image: *buildkit_image
     commands:
-      - npm run build
+      - buildctl build \
+          --addr tcp://buildkit.buildkit.svc.cluster.local:2395 \
+          --frontend=dockerfile.v0 \
+          --local context=. \
+          --local dockerfile=. \
+          --output type=image,name=registry.xheize.cc/xheize-cc:nightly-${CI_COMMIT_SHA:0:8},push=true
+    when:
+      event: [manual]
+      branch: [dev]
+
+  - name: build-and-push
+    image: *buildkit_image
+    commands:
+      - buildctl build \
+          --addr tcp://buildkit.buildkit.svc.cluster.local:2395 \
+          --frontend=dockerfile.v0 \
+          --local context=. \
+          --local dockerfile=. \
+          --output type=image,name=registry.xheize.cc/xheize-cc:latest,push=true
+    when:
+      event: [push]
+      branch: [main]
