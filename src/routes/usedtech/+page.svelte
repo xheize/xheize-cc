@@ -15,16 +15,6 @@
 
 	const frameworks = [
 		{
-			id: "kuberentes",
-			name: "k3s",
-			category: "framework",
-			icon: "code",
-			tag: "Primary Language",
-			desc: "타입 안정성 확보 및 대규모 애플리케이션의 유지보수성을 극대화하기 위해 핵심 개발 언어로 사용합니다.",
-			why: "컴파일 단계에서 정적 타입을 체크하여 런타임 오류를 차단하며, 리팩토링 시 강력한 IDE 지원으로 생산성을 향상시킵니다.",
-			level: "Core Stack",
-		},
-		{
 			id: "sveltekit",
 			name: "SvelteKit / Svelte 5",
 			category: "framework",
@@ -54,7 +44,7 @@
 			icon: "code",
 			tag: "Lightweight Kubernetes",
 			desc: "가볍고 효율적인 쿠버네티스 배포로, 소규모 환경에서도 안정적인 컨테이너 오케스트레이션을 제공합니다.",
-			why: "컴파일 단계에서 정적 타입을 체크하여 런타임 오류를 차단하며, 리팩토링 시 강력한 IDE 지원으로 생산성을 향상시킵니다.",
+			why: "k3s는 경량화된 쿠버네티스로서 메모리 사용량이 극히 적어, 홈 서버 환경에서도 엔터프라이즈급 컨테이너 오케스트레이션을 하드웨어 무리 없이 안정적으로 실행할 수 있기 때문에 채택했습니다.",
 			level: "Core Stack",
 		},
 		{
@@ -86,8 +76,8 @@
 			category: "software",
 			icon: "setting",
 			tag: "LoadBalancer",
-			desc: "타입 안정성 확보 및 대규모 애플리케이션의 유지보수성을 극대화하기 위해 핵심 개발 언어로 사용합니다.",
-			why: "컴파일 단계에서 정적 타입을 체크하여 런타임 오류를 차단하며, 리팩토링 시 강력한 IDE 지원으로 생산성을 향상시킵니다.",
+			desc: "쿠버네티스 클러스터 내부 서비스들에 로컬 네트워크 대역의 외부 IP를 동적으로 할당해주는 레이어 2/BGP 로드밸런서입니다.",
+			why: "퍼블릭 클라우드가 아닌 베어메탈 온프레미스 인프라 환경에서 External IP를 정상적으로 획득하여 외부 트래픽을 인입하기 위해 필수적으로 사용합니다.",
 			level: "Core Stack",
 		},
 		{
@@ -106,8 +96,8 @@
 			category: "software",
 			icon: "sync",
 			tag: "GitOps",
-			desc: "코드 커밋 시 린트, 테스트 빌드, Docker 이미지 빌드 및 서버 배포 파이프라인을 완전 자동화하는 통합 배포 툴입니다.",
-			why: "가볍고 효율적인 파이프라인 관리를 통해 Git 커밋 이후 수동 작업 없는 지속적인 통합 배포 환경을 제공합니다.",
+			desc: "쿠버네티스를 위한 선언적 GitOps 지속적 배포(CD) 도구로, Git 저장소의 Manifest 상태와 실제 클러스터 리소스 상태를 실시간으로 모니터링하고 동기화합니다.",
+			why: "모든 애플리케이션의 배포 상태를 Git 커밋 히스토리로 명확히 관리하고, 휴먼 에러를 방지하며 롤백 편의성을 극대화하기 위해 채택했습니다.",
 			level: "Automation",
 		},
 		{
@@ -116,18 +106,8 @@
 			category: "software",
 			icon: "switch_access",
 			tag: "LoadBalancer",
-			desc: "코드 커밋 시 린트, 테스트 빌드, Docker 이미지 빌드 및 서버 배포 파이프라인을 완전 자동화하는 통합 배포 툴입니다.",
-			why: "가볍고 효율적인 파이프라인 관리를 통해 Git 커밋 이후 수동 작업 없는 지속적인 통합 배포 환경을 제공합니다.",
-			level: "Automation",
-		},
-		{
-			id: "woodpecker",
-			name: "Woodpecker CI",
-			category: "infra",
-			icon: "settings_ethernet",
-			tag: "CI/CD Pipeline",
-			desc: "코드 커밋 시 린트, 테스트 빌드, Docker 이미지 빌드 및 서버 배포 파이프라인을 완전 자동화하는 통합 배포 툴입니다.",
-			why: "가볍고 효율적인 파이프라인 관리를 통해 Git 커밋 이후 수동 작업 없는 지속적인 통합 배포 환경을 제공합니다.",
+			desc: "컨테이너 환경에 고도로 최적화된 리버스 프록시이자 Ingress Controller로, 유입되는 트래픽의 호스트 헤더 기반 정밀 라우팅 및 SSL/TLS 인증서 자동 갱신을 지원합니다.",
+			why: "마이크로서비스들의 다양한 서브도메인을 선언적으로 매핑하고, Let's Encrypt를 통한 와일드카드 HTTPS 보안 인증서를 완전 자동으로 관리하기 위해 도입했습니다.",
 			level: "Automation",
 		},
 	];
@@ -167,11 +147,11 @@
 			id: "golang",
 			name: "Go",
 			category: "language",
-			icon: "",
-			tag: "",
-			desc: "",
-			why: "",
-			level: "",
+			icon: "developer_board",
+			tag: "System Language",
+			desc: "가벼운 메모리 사용량과 초고속 동시성 처리 성능을 요구하는 마이크로서비스 백엔드 엔지니어링 및 고성능 유틸리티 스크립트 작성에 활용합니다.",
+			why: "단일 바이너리로 컴파일되어 도커 컨테이너 경량화에 매우 유리하며, 고유의 고루틴(Goroutine) 메커니즘으로 대규모 네트워크 소켓 통신 및 데이터 파이프라인을 효율적으로 다룰 수 있어 채택했습니다.",
+			level: "Capable",
 		},
 	];
 
