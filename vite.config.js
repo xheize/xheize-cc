@@ -7,5 +7,12 @@ export default defineConfig({
 		alias: {
 			'smui-theme': '/src/theme/_smui-theme.scss'
 		}
+	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				loadPaths: ['node_modules']
+			}
+		}
 	}
 });
