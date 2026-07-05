@@ -3,7 +3,7 @@ variables:
   - &buildkit_image 'moby/buildkit:v0.31.0'
 
 when:
-  - event: [pull_request, push]
+  - event: [pull_request, push, tag]
 
 steps:
   - name: install-lint-check
@@ -13,8 +13,8 @@ steps:
       - npm run check
     when:
       event: [push, pull_request]
-      branch: [dev]
-      
+      branch: [dev, main]
+
   - name: build-and-push-nightly
     image: *buildkit_image
     commands:
@@ -23,10 +23,10 @@ steps:
           --frontend=dockerfile.v0 \
           --local context=. \
           --local dockerfile=. \
-          --output type=image,name=registry.xheize.cc/xheize-cc:nightly-${CI_COMMIT_SHA:0:8},push=true
+          --output type=image,name=registry.xheize.cc/xheize-cc:nightly-${CI_COMMIT_SHA:0:8},registry.xheize.cc/xheize-cc:nightly,push=true
     when:
-      event: [manual]
-      branch: [dev]
+      event: [push, cron, manual]
+      branch: [main]
 
   - name: build-and-push
     image: *buildkit_image
@@ -36,7 +36,7 @@ steps:
           --frontend=dockerfile.v0 \
           --local context=. \
           --local dockerfile=. \
-          --output type=image,name=registry.xheize.cc/xheize-cc:latest,push=true
+          --output type=image,name=registry.xheize.cc/xheize-cc:${CI_COMMIT_TAG},registry.xheize.cc/xheize-cc:latest,push=true
     when:
-      event: [push]
+      event: [tag]
       branch: [main]
