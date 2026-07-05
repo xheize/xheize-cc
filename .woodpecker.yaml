@@ -23,7 +23,8 @@ steps:
           --frontend=dockerfile.v0 \
           --local context=. \
           --local dockerfile=. \
-          --output type=image,name=registry.xheize.cc/xheize-cc:nightly-${CI_COMMIT_SHA:0:8},registry.xheize.cc/xheize-cc:nightly,push=true
+          --output type=image,name=registry.xheize.cc/xheize-cc:nightly-${CI_COMMIT_SHA:0:8},push=true \
+          --output type=image,name=registry.xheize.cc/xheize-cc:nightly,push=true
     when:
       event: [push, cron, manual]
       branch: [main]
@@ -36,7 +37,8 @@ steps:
           --frontend=dockerfile.v0 \
           --local context=. \
           --local dockerfile=. \
-          --output type=image,name=registry.xheize.cc/xheize-cc:${CI_COMMIT_TAG},registry.xheize.cc/xheize-cc:latest,push=true
+          --output type=image,name=registry.xheize.cc/xheize-cc:${CI_COMMIT_TAG},push=true \
+          --output type=image,name=registry.xheize.cc/xheize-cc:latest,push=true
     when:
       event: [tag]
       branch: [main]
