@@ -14,7 +14,7 @@ Metaphorically designed as a personal "Sandbox (모래성)" portal site that agg
   - **AI Chat Helper**: Streaming integration with local 무검열 AI backend powered by `vLLM` (`xheize-rlhf` model).
   - **Tech Stack Info**: Category-filtered catalog showing the active system specifications (Kubernetes, Proxmox, DevOps tools).
   - **Live System Status**: Real-time mock dashboard metrics (CPU, RAM, Network Traffic).
-- **Security & SSO ready**: Embedded authentication flow utilizing Auth.js (`@auth/sveltekit`) for **Authentik SSO (OIDC)** connection.
+- **First-party SSO ready**: Authorization Code 기반으로 자체 `sso-server`의 OIDC discovery, token, userinfo 엔드포인트와 직접 연동합니다.
 - **Docker & CI/CD deployment ready**: Lightweight multi-stage Docker builds and automated Woodpecker CI lint/build testing.
 
 ---
@@ -35,10 +35,17 @@ Copy the template environment file and populate it with your local system config
 cp .env.example .env
 ```
 
-Refer to the [.env](.env) file for details regarding:
-- `AUTHENTIK_ISSUER`, `AUTHENTIK_CLIENT_ID`, `AUTHENTIK_CLIENT_SECRET` (OIDC connection)
-- `AUTH_SECRET` (AuthJS secret string)
-- `AUTH_URL` (Application runtime URL redirection entry)
+OIDC 연결에는 다음 값을 설정합니다.
+
+- `SSO_ISSUER`: 자체 `sso-server` issuer URL
+- `SSO_CLIENT_ID`, `SSO_CLIENT_SECRET`: `sso-server`에 등록한 confidential client
+- `AUTH_SECRET`: 앱 세션을 암호화하는 32자 이상의 랜덤 문자열
+- `ORIGIN`: 배포된 앱의 외부 origin
+- `AUTH_PROTECTED_ROUTES`: 인증이 필요한 경로 prefix 목록. 기본값은 `/aichat`
+
+`sso-server`에는 앱의 `/auth/callback` URL을 정확히 등록해야 합니다. 개발·운영용 예시는 [docs/sso-client.example.json](docs/sso-client.example.json)에 있습니다. 이 예시의 `XHEIZE_CC_CLIENT_SECRET` 값과 앱의 `SSO_CLIENT_SECRET` 값은 같아야 합니다.
+
+인증이 설정되지 않은 로컬 환경에서는 모든 페이지가 공개 상태로 동작합니다. 설정이 완료되면 AI Chat이 기본적으로 로그인 보호를 받으며, 헤더에 로그인/계정 버튼이 나타납니다.
 
 ### 3. Local Development
 
@@ -92,5 +99,5 @@ src/
   │   └── +layout.svelte
   ├── theme/          # SMUI SASS configurations and M3 themes
   ├── app.scss        # Global CSS variable theme mapping (Tailwind v4 ready)
-  └── hooks.server.js # Server side authentication hook (Auth.js)
+  └── hooks.server.js # 자체 sso-server OIDC 세션 및 보호 경로 처리
 ```

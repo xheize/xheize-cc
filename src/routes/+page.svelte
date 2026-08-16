@@ -1,11 +1,10 @@
 <script>
-	import { onMount } from "svelte";
 	import { goto } from "$app/navigation";
+	import SiteHeader from "$lib/components/SiteHeader.svelte";
 
 	// --- Svelte 5 Runes for State Management ---
 	let y = $state(0);
 	let innerHeight = $state(800);
-	let innerWidth = $state(1200);
 
 	// CPU, RAM, Network and Uptime Dummy Live Metrics
 	let cpuUsage = $state(24);
@@ -20,16 +19,11 @@
 	let activeLogIndex = $state(0);
 
 	// Dynamic calculation based on scroll offset (Runes: $derived)
-	let isScrolled = $derived(y > 20);
-
 	// Crossfade animations for Section 1 and Section 2 inside the sticky track (0 ~ 200vh)
 	let scrollRatio = $derived(Math.min(1, y / (innerHeight || 1)));
 
 	// Section 1: Landing fade out as we scroll to 100vh
 	let landingOpacity = $derived(Math.max(0, 1 - scrollRatio * 2)); // Fades out early (by 50% scroll)
-	let sandcastleOpacity = $derived(Math.max(0.05, 1 - scrollRatio)); // Keeps a faint shadow of the castle
-	let sandcastleScale = $derived(1 - scrollRatio * 0.15); // Shrinks slightly
-
 	// Section 2: Narrative fade in (starts at 30% scroll, fully visible at 100% scroll / 100vh)
 	let narrativeOpacity = $derived(
 		scrollRatio < 0.3 ? 0 : Math.min(1, (scrollRatio - 0.3) / 0.7),
@@ -41,15 +35,6 @@
 			? 40
 			: Math.max(0, 40 * (1 - (scrollRatio - 0.3) / 0.7)),
 	);
-
-	// Scroll handler to smoothly target sections
-	/** @param {string} id */
-	function scrollToSection(id) {
-		const target = document.getElementById(id);
-		if (target) {
-			target.scrollIntoView({ behavior: "smooth" });
-		}
-	}
 
 	/** @param {string} url */
 	function redirectToPage(url) {
@@ -102,7 +87,7 @@
 	});
 </script>
 
-<svelte:window bind:scrollY={y} bind:innerHeight bind:innerWidth />
+<svelte:window bind:scrollY={y} bind:innerHeight />
 
 <svelte:head>
 	<title>Xheize | Sandbox</title>
@@ -122,41 +107,7 @@
 	/>
 </svelte:head>
 
-<!-- Sticky Header (M3 Top App Bar Style) -->
-<header
-	class="fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-4 flex items-center justify-between"
-	class:scrolled-header={isScrolled}
->
-	<!-- Left: Logo -->
-	<button
-		onclick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-		class="flex items-center gap-2 bg-transparent border-none cursor-pointer focus:outline-none group text-left p-0"
-	>
-		<div
-			class="w-8 h-8 rounded-m3-sm bg-primary-text/10 flex items-center justify-center group-hover:bg-primary-text/20 transition-colors"
-		>
-			<span class="material-symbols-rounded text-primary-text text-xl"
-				>fort</span
-			>
-		</div>
-		<span
-			class="font-outfit font-extrabold text-xl tracking-wide text-primary-text transition-transform group-hover:scale-102"
-		>
-			Xheize
-		</span>
-	</button>
-
-	<!-- Right: Quick Navigation Actions -->
-	<nav class="flex items-center gap-2">
-		<button
-			onclick={() => scrollToSection("card-status")}
-			class="nav-btn active-nav-btn"
-		>
-			<span class="material-symbols-rounded text-sm md:hidden">dns</span>
-			<span class="hidden md:inline">System Status</span>
-		</button>
-	</nav>
-</header>
+<SiteHeader active="home" />
 
 <!-- Main Scroll Container -->
 <main class="w-full relative bg-background text-on-background">
@@ -168,7 +119,7 @@
 	-->
 	<div class="relative w-full h-[200vh]">
 		<div
-			class="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-6"
+			class="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 pt-16"
 		>
 			<!-- Background Glowing Core (M3 Ambient Design) -->
 			<div
@@ -178,7 +129,7 @@
 
 			<!-- --- SECTION 1: LANDING OVERLAY --- -->
 			<div
-				class="w-full flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
+					class="w-full max-w-5xl flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
 				style="pointer-events: {landingOpacity > 0.01
 					? 'auto'
 					: 'none'};"
@@ -345,14 +296,14 @@
 					style="opacity: {landingOpacity};"
 				>
 					<h1
-						class="font-outfit font-extrabold text-4xl md:text-6xl tracking-tight max-w-2xl mb-4 text-on-background bg-clip-text"
+						class="font-outfit font-extrabold text-[clamp(2.15rem,7vw,4.75rem)] leading-[1.02] tracking-tight max-w-4xl mb-4 text-on-background text-balance"
 					>
 						모래성에 오신 것을 환영합니다.
 					</h1>
 
 					<!-- Whiteboard Alert Card (Latest update logs) -->
 					<div
-						class="m3-whiteboard relative mx-auto my-6 w-2xl text-left p-5 bg-surface-container-high border border-outline-variant/30 rounded-m3-lg shadow-m3-elevation-2 backdrop-blur-md transition-transform hover:scale-102"
+						class="m3-whiteboard relative mx-auto my-5 sm:my-6 w-full max-w-2xl text-left p-4 sm:p-5 bg-surface-container-high border border-outline-variant/30 rounded-m3-lg shadow-m3-elevation-2 backdrop-blur-md transition-transform hover:scale-[1.01]"
 					>
 						<div
 							class="flex items-center gap-2 text-primary-text font-outfit font-bold text-sm tracking-wider mb-2 uppercase"
@@ -423,11 +374,11 @@
 	<!-- --- SECTION 3: APP DASHBOARD --- -->
 	<section
 		id="dashboard"
-		class="relative min-h-screen w-full bg-surface-container-lowest py-24 px-6 md:px-12 flex flex-col items-center justify-center border-t border-outline-variant/20 z-30"
+		class="relative min-h-screen w-full bg-surface-container-lowest py-20 sm:py-24 flex flex-col items-center justify-center border-t border-outline-variant/20 z-30"
 	>
-		<div class="max-w-6xl w-full flex flex-col items-center">
+		<div class="responsive-shell flex flex-col items-center">
 			<!-- Headline -->
-			<div class="text-center mb-16 max-w-2xl">
+			<div class="text-center mb-10 sm:mb-16 max-w-2xl">
 				<!-- <div
 					class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-m3-full text-xs font-outfit font-semibold tracking-wider uppercase mb-4"
 				>
@@ -451,7 +402,7 @@
 
 			<!-- Grid Menu (M3 Cards) -->
 			<div
-				class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full items-stretch"
+				class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 sm:gap-6 w-full items-stretch"
 			>
 
 				<!-- Card 2: Tech Blog -->
@@ -662,81 +613,6 @@
 </main>
 
 <style>
-	/* --- Custom M3 Utility Components & Transitions --- */
-
-	:global(html) {
-		scroll-behavior: smooth;
-	}
-
-	.scrolled-header {
-		background-color: rgba(
-			20,
-			18,
-			24,
-			0.8
-		); /* M3 Surface container / 80% opacity */
-		backdrop-filter: blur(12px);
-		box-shadow:
-			0px 4px 6px -1px rgba(0, 0, 0, 0.1),
-			0px 2px 4px -1px rgba(0, 0, 0, 0.06);
-		border-bottom: 1px solid rgba(147, 143, 153, 0.1);
-	}
-
-	.nav-btn {
-		font-family: "Outfit", sans-serif;
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--md-sys-color-on-surface-variant);
-		background-color: transparent;
-		border: none;
-		padding: 0.5rem 1rem;
-		border-radius: 9999px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	.nav-btn:hover {
-		color: var(--md-sys-color-primary-text);
-		background-color: rgba(208, 188, 255, 0.08); /* primary-text 8% */
-	}
-
-	.active-nav-btn {
-		color: var(--md-sys-color-primary-text);
-		border: 1px solid rgba(208, 188, 255, 0.2);
-	}
-
-	.m3-chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.375rem 0.75rem;
-		background-color: var(--md-sys-color-surface-container);
-		color: var(--md-sys-color-on-surface);
-		border: 1px solid rgba(147, 143, 153, 0.2);
-		border-radius: 8px; /* M3 small rounded */
-		font-family: "Outfit", sans-serif;
-		font-size: 0.8125rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
-	}
-
-	.m3-chip:hover {
-		background-color: rgba(208, 188, 255, 0.05);
-		border-color: rgba(208, 188, 255, 0.4);
-	}
-
-	.m3-chip-indicator {
-		display: inline-block;
-		width: 6px;
-		height: 6px;
-		border-radius: 9999px;
-		background-color: var(--md-sys-color-primary-text);
-	}
-
-	/* Scale effect for interactive buttons */
 	.active\:scale-98:active {
 		transform: scale(0.98);
 	}

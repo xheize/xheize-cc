@@ -1,11 +1,10 @@
 <script>
-	import { fade, slide } from "svelte/transition";
+	import { fade } from "svelte/transition";
 	import { onMount } from "svelte";
+	import SiteHeader from "$lib/components/SiteHeader.svelte";
 
 	// Svelte 5 Runes for state management
 	let { data } = $props();
-	let y = $state(0);
-	let isScrolled = $derived(y > 20);
 
 	let inputValue = $state("");
 	let isTyping = $state(false);
@@ -144,8 +143,6 @@
 	}
 </script>
 
-<svelte:window bind:scrollY={y} />
-
 <svelte:head>
 	<title>AI Chat - Xheize Sandbox</title>
 	<meta
@@ -165,58 +162,7 @@
 <main
 	class="w-full min-h-screen bg-background text-on-background relative overflow-hidden font-roboto selection:bg-primary-text/30 selection:text-white flex flex-col justify-between"
 >
-	<!-- Sticky Header (M3 Top App Bar Style) -->
-	<header
-		class="fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-4 flex items-center justify-between"
-		class:scrolled-header={isScrolled}
-	>
-		<!-- Left: Logo -->
-		<a
-			href="/"
-			class="flex items-center gap-2 bg-transparent border-none cursor-pointer focus:outline-none group text-left p-0 decoration-none"
-		>
-			<div
-				class="w-8 h-8 rounded-m3-sm bg-primary-text/10 flex items-center justify-center group-hover:bg-primary-text/20 transition-colors"
-			>
-				<span class="material-symbols-rounded text-primary-text text-xl"
-					>fort</span
-				>
-			</div>
-			<span
-				class="font-outfit font-extrabold text-xl tracking-wide text-primary-text transition-transform group-hover:scale-102"
-			>
-				Xheize
-			</span>
-		</a>
-
-		<!-- Right: Quick Navigation Actions -->
-		<nav class="flex items-center gap-2">
-			<a href="/#card-blog" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>article</span
-				>
-				<span class="hidden md:inline">Blog</span>
-			</a>
-			<a href="/#card-status" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>dns</span
-				>
-				<span class="hidden md:inline">System Status</span>
-			</a>
-			<a href="/usedtech" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>settings_suggest</span
-				>
-				<span class="hidden md:inline">Tech Stack</span>
-			</a>
-			<a href="/aichat" class="nav-btn active-nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>chat</span
-				>
-				<span class="hidden md:inline">AI Chat</span>
-			</a>
-		</nav>
-	</header>
+	<SiteHeader active="chat" />
 
 	<!-- Glowing Ambient Background Blobs -->
 	<div
@@ -230,12 +176,12 @@
 
 	<!-- Content Container -->
 	<div
-		class="max-w-6xl w-full mx-auto px-4 md:px-8 pt-28 pb-6 flex-1 flex flex-col gap-6 items-stretch overflow-hidden"
+		class="responsive-shell pt-24 sm:pt-28 pb-5 sm:pb-6 flex-1 flex flex-col gap-4 sm:gap-6 items-stretch overflow-hidden"
 	>
 		<!-- Welcome Title -->
 		<section class="text-center py-2 max-w-xl mx-auto">
 			<h1
-				class="font-outfit font-extrabold text-3xl md:text-4xl tracking-tight text-on-background mb-2 bg-clip-text"
+				class="font-outfit font-extrabold text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] tracking-tight text-on-background mb-2 bg-clip-text"
 			>
 				Large Language Model
 			</h1>
@@ -246,10 +192,10 @@
 
 		<!-- Chat Layout Grid -->
 		<div
-			class="flex-1 flex flex-col lg:flex-row gap-6 items-stretch min-h-[450px] overflow-hidden"
+			class="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch min-h-[min(520px,64svh)] xl:min-h-[620px] overflow-hidden"
 		>
 			<!-- Left Panel: Profile & Suggestions Sidebar (Desktop only) -->
-			<aside class="hidden lg:flex lg:w-1/3 flex-col gap-5">
+			<aside class="hidden lg:flex lg:w-[32%] xl:w-[30%] flex-col gap-5">
 				<!-- Quick Bot Profile Card -->
 				<div
 					class="bg-surface-container border border-outline-variant/30 rounded-m3-xl p-5 shadow-m3-elevation-1 backdrop-blur-md relative overflow-hidden group"
@@ -423,7 +369,7 @@
 					class="lg:hidden px-4 py-2 border-t border-outline-variant/10 bg-surface-container-low/50"
 				>
 					<div
-						class="flex items-center gap-2 overflow-x-auto py-1 scroll-smooth"
+					class="flex items-center gap-2 overflow-x-auto py-1 scroll-smooth [scrollbar-width:none]"
 						style="scrollbar-width: none; -ms-overflow-style: none;"
 					>
 						{#each suggestions as sug}
@@ -483,43 +429,6 @@
 </main>
 
 <style>
-	/* Header and navigation styling ported from main page */
-	.scrolled-header {
-		background-color: rgba(20, 18, 24, 0.8);
-		backdrop-filter: blur(12px);
-		box-shadow:
-			0px 4px 6px -1px rgba(0, 0, 0, 0.1),
-			0px 2px 4px -1px rgba(0, 0, 0, 0.06);
-		border-bottom: 1px solid rgba(147, 143, 153, 0.1);
-	}
-
-	.nav-btn {
-		font-family: "Outfit", sans-serif;
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--md-sys-color-on-surface-variant);
-		background-color: transparent;
-		border: none;
-		padding: 0.5rem 1rem;
-		border-radius: 9999px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	.nav-btn:hover {
-		color: var(--md-sys-color-primary-text);
-		background-color: rgba(208, 188, 255, 0.08);
-	}
-
-	.active-nav-btn {
-		color: var(--md-sys-color-primary-text);
-		border: 1px solid rgba(208, 188, 255, 0.2);
-	}
-
-	/* Scrollbar custom style */
 	.chat-scroll::-webkit-scrollbar {
 		width: 6px;
 	}
@@ -532,11 +441,5 @@
 	}
 	.chat-scroll::-webkit-scrollbar-thumb:hover {
 		background: rgba(208, 188, 255, 0.3);
-	}
-
-	:global(body) {
-		background-color: var(--md-sys-color-background);
-		margin: 0;
-		color: var(--md-sys-color-on-background);
 	}
 </style>

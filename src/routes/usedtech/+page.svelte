@@ -1,12 +1,11 @@
 <script>
 	import { fade, slide } from "svelte/transition";
+	import SiteHeader from "$lib/components/SiteHeader.svelte";
 
 	// Svelte 5 Runes for state management
 	let activeFilter = $state("all");
 	/** @type {string | null} */
 	let selectedTechId = $state(null);
-	let y = $state(0);
-	let isScrolled = $derived(y > 20);
 
 	const profile = {
 		name: "Xheize",
@@ -199,8 +198,6 @@
 	}
 </script>
 
-<svelte:window bind:scrollY={y} />
-
 <svelte:head>
 	<title>Tech - Xheize Sandbox</title>
 	<meta name="description" content="현재 사용중인 기술들" />
@@ -217,58 +214,7 @@
 <main
 	class="w-full min-h-screen bg-background text-on-background relative overflow-hidden font-roboto selection:bg-primary-text/30 selection:text-white"
 >
-	<!-- Sticky Header (M3 Top App Bar Style) -->
-	<header
-		class="fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-4 flex items-center justify-between"
-		class:scrolled-header={isScrolled}
-	>
-		<!-- Left: Logo -->
-		<a
-			href="/"
-			class="flex items-center gap-2 bg-transparent border-none cursor-pointer focus:outline-none group text-left p-0 decoration-none"
-		>
-			<div
-				class="w-8 h-8 rounded-m3-sm bg-primary-text/10 flex items-center justify-center group-hover:bg-primary-text/20 transition-colors"
-			>
-				<span class="material-symbols-rounded text-primary-text text-xl"
-					>fort</span
-				>
-			</div>
-			<span
-				class="font-outfit font-extrabold text-xl tracking-wide text-primary-text transition-transform group-hover:scale-102"
-			>
-				Xheize
-			</span>
-		</a>
-
-		<!-- Right: Quick Navigation Actions -->
-		<nav class="flex items-center gap-2">
-			<a href="/#card-blog" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>article</span
-				>
-				<span class="hidden md:inline">Blog</span>
-			</a>
-			<a href="/#card-status" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>dns</span
-				>
-				<span class="hidden md:inline">System Status</span>
-			</a>
-			<a href="/usedtech" class="nav-btn active-nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>settings_suggest</span
-				>
-				<span class="hidden md:inline">Tech Stack</span>
-			</a>
-			<a href="/aichat" class="nav-btn decoration-none">
-				<span class="material-symbols-rounded text-sm md:hidden"
-					>chat</span
-				>
-				<span class="hidden md:inline">AI Chat</span>
-			</a>
-		</nav>
-	</header>
+	<SiteHeader active="tech" />
 
 	<!-- Glowing Ambient Background Blobs -->
 	<div
@@ -280,11 +226,11 @@
 		style="animation-duration: 6s"
 	></div>
 
-	<div class="max-w-7xl mx-auto px-4 md:px-8 pt-28 pb-8 flex flex-col gap-8">
+	<div class="responsive-shell pt-24 sm:pt-28 pb-8 flex flex-col gap-6 sm:gap-8">
 		<!-- Hero Section -->
-		<section class="text-center py-6 md:py-10 max-w-3xl mx-auto">
+		<section class="text-center py-5 md:py-10 max-w-3xl mx-auto">
 			<h1
-				class="font-outfit font-extrabold text-4xl md:text-5xl tracking-tight text-on-background mb-4 bg-clip-text"
+				class="font-outfit font-extrabold text-[clamp(2.3rem,6vw,4rem)] leading-[1.05] tracking-tight text-on-background mb-4 bg-clip-text text-balance"
 			>
 				Used Technology Stack
 			</h1>
@@ -298,7 +244,7 @@
 		</section>
 
 		<!-- Main Grid Layout -->
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 			<!-- Left Column: Profile Card (4 cols) -->
 			<aside class="lg:col-span-4 flex flex-col gap-6">
 				<!-- Profile Card -->
@@ -431,7 +377,7 @@
 			<section class="lg:col-span-8 flex flex-col gap-6">
 				<!-- Custom Segmented Buttons for Filtering (Tabs) -->
 				<div
-					class="flex flex-wrap items-center gap-2 bg-surface-container p-1.5 rounded-m3-full border border-outline-variant/30 backdrop-blur-md"
+					class="flex items-center gap-2 bg-surface-container p-1.5 rounded-m3-full border border-outline-variant/30 backdrop-blur-md overflow-x-auto [scrollbar-width:none]"
 				>
 					<button
 						onclick={() => (activeFilter = "all")}
@@ -492,7 +438,7 @@
 				</div>
 
 				<!-- Technology Cards Board -->
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
 					{#each filteredTechnologies as tech (tech.id + '-' + tech.category + '-' + tech.name)}
 						<button
 							onclick={() => toggleDetails(tech.id)}
@@ -629,52 +575,3 @@
 		</footer>
 	</div>
 </main>
-
-<style>
-	/* Header styles from main page */
-	.scrolled-header {
-		background-color: rgba(
-			20,
-			18,
-			24,
-			0.8
-		); /* M3 Surface container / 80% opacity */
-		backdrop-filter: blur(12px);
-		box-shadow:
-			0px 4px 6px -1px rgba(0, 0, 0, 0.1),
-			0px 2px 4px -1px rgba(0, 0, 0, 0.06);
-		border-bottom: 1px solid rgba(147, 143, 153, 0.1);
-	}
-
-	.nav-btn {
-		font-family: "Outfit", sans-serif;
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--md-sys-color-on-surface-variant);
-		background-color: transparent;
-		border: none;
-		padding: 0.5rem 1rem;
-		border-radius: 9999px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	.nav-btn:hover {
-		color: var(--md-sys-color-primary-text);
-		background-color: rgba(208, 188, 255, 0.08); /* primary-text 8% */
-	}
-
-	.active-nav-btn {
-		color: var(--md-sys-color-primary-text);
-		border: 1px solid rgba(208, 188, 255, 0.2);
-	}
-
-	:global(body) {
-		background-color: var(--md-sys-color-background);
-		margin: 0;
-		color: var(--md-sys-color-on-background);
-	}
-</style>

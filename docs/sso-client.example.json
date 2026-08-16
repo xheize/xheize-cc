@@ -1,0 +1,13 @@
+{
+  "id": "xheize-cc",
+  "secret_env": "XHEIZE_CC_CLIENT_SECRET",
+  "redirect_uris": [
+    "http://localhost:5173/auth/callback",
+    "http://localhost:3000/auth/callback",
+    "https://xheize.cc/auth/callback"
+  ],
+  "response_types": ["code"],
+  "grant_types": ["authorization_code"],
+  "scopes": ["openid", "profile", "email"],
+  "public": false
+}

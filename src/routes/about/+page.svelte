@@ -1,471 +1,102 @@
 <script>
+	import SiteHeader from "$lib/components/SiteHeader.svelte";
+
 	/** @type {{ data: import('./$types').PageData }} */
 	let { data } = $props();
-	
 	let clientTime = $state(/** @type {string | null} */ (null));
-	
-	// 이 코드는 하이드레이션 후 클라이언트에서만 실행됩니다
+
 	$effect(() => {
 		clientTime = new Date().toISOString();
 	});
 </script>
 
 <svelte:head>
-	<title>About - Xheize's Personal Page</title>
-	<meta name="description" content="About Xheize - Web Developer passionate about modern web technologies" />
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<title>About - Xheize Sandbox</title>
+	<meta name="description" content="Xheize의 개발 관심사와 SvelteKit 기반 샌드박스를 소개합니다." />
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
 </svelte:head>
 
-<main>
-	<div class="container">
-		<div class="app-bar">
-			<a href="/" class="mat-button back-button">
-				<span class="material-icons">arrow_back</span>
-				Back to Home
-			</a>
-		</div>
-		
-		<div class="hero">
-			<h1 class="mat-display-1">About Me</h1>
-			<p class="mat-headline">Passionate about building great web experiences</p>
-		</div>
+<SiteHeader active="none" />
 
-		<div class="content">
-			<div class="mat-card elevation-4">
-				<div class="mat-card-header">
-					<div class="avatar">
-						<span class="material-icons">person</span>
-					</div>
-					<div class="header-text">
-						<h2 class="mat-title">{data.profile.name}</h2>
-						<p class="mat-subheading">{data.profile.title}</p>
-					</div>
+<main class="relative min-h-screen overflow-hidden bg-background text-on-background font-roboto">
+	<div class="ambient ambient-one"></div>
+	<div class="ambient ambient-two"></div>
+
+	<div class="responsive-shell relative z-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
+		<section class="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] xl:gap-14">
+			<div class="max-w-3xl">
+				<div class="mb-5 inline-flex items-center gap-2 rounded-m3-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-wider text-primary-text">
+					<span class="material-symbols-rounded text-sm">waving_hand</span>
+					ABOUT THE BUILDER
 				</div>
-				<div class="mat-card-content">
-					<p class="mat-body-1">{data.profile.experience}</p>
+				<h1 class="font-outfit text-[clamp(2.8rem,8vw,6.4rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-on-background text-balance">
+					만들고, 운영하고,<br /><span class="text-primary-text">계속 개선합니다.</span>
+				</h1>
+				<p class="mt-6 max-w-2xl text-base leading-relaxed text-on-surface-variant sm:text-lg">
+					{data.profile.experience}. 빠른 웹 경험과 안정적인 인프라 사이의 연결을 탐구하는 개인 샌드박스입니다.
+				</p>
+				<div class="mt-7 flex flex-wrap gap-2">
+					{#each data.profile.interests as interest}
+						<span class="rounded-m3-full border border-outline-variant/30 bg-surface-container px-4 py-2 text-xs font-medium text-on-surface">{interest}</span>
+					{/each}
 				</div>
 			</div>
 
-			<div class="mat-card elevation-4">
-				<div class="mat-card-content">
-					<h2 class="mat-title">
-						<span class="material-icons title-icon">interests</span>
-						Interests
-					</h2>
-					<div class="chips-container">
-						{#each data.profile.interests as interest}
-							<div class="mat-chip mat-primary">
-								{interest}
-							</div>
-						{/each}
+			<aside class="relative overflow-hidden rounded-m3-xl border border-outline-variant/30 bg-surface-container/90 p-5 shadow-m3-elevation-3 backdrop-blur-xl sm:p-7">
+				<div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/20 blur-3xl"></div>
+				<div class="relative flex items-center gap-4">
+					<div class="grid h-16 w-16 shrink-0 place-items-center rounded-[20px] border border-primary/20 bg-primary/10 text-primary-text sm:h-20 sm:w-20">
+						<span class="material-symbols-rounded text-4xl sm:text-5xl">person</span>
+					</div>
+					<div class="min-w-0">
+						<p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary-text">Profile</p>
+						<h2 class="truncate font-outfit text-2xl font-extrabold sm:text-3xl">{data.profile.name}</h2>
+						<p class="mt-1 text-sm text-on-surface-variant">{data.profile.title}</p>
 					</div>
 				</div>
+				<div class="relative mt-7 grid grid-cols-3 gap-2 sm:gap-3">
+					<div class="stat"><strong>SSR</strong><span>rendering</span></div>
+					<div class="stat"><strong>Svelte 5</strong><span>frontend</span></div>
+					<div class="stat"><strong>Node</strong><span>runtime</span></div>
+				</div>
+			</aside>
+		</section>
+
+		<section class="mt-10 grid gap-5 lg:mt-16 lg:grid-cols-[0.8fr_1.2fr]">
+			<div class="rounded-m3-xl border border-outline-variant/25 bg-surface-container-low p-5 sm:p-7">
+				<span class="material-symbols-rounded text-3xl text-secondary">architecture</span>
+				<h2 class="mt-5 font-outfit text-2xl font-bold">Working principles</h2>
+				<p class="mt-3 text-sm leading-relaxed text-on-surface-variant sm:text-base">작게 실험하고, 실제 환경에서 관찰한 뒤, 반복 가능한 구조로 정리합니다. 화면의 디테일과 운영 안정성을 같은 제품 경험으로 봅니다.</p>
 			</div>
 
-			<div class="mat-card elevation-4 ssr-demo">
-				<div class="mat-card-content">
-					<h2 class="mat-title">
-						<span class="material-icons title-icon">schedule</span>
-						SSR Demonstration
-					</h2>
-					<div class="time-info">
-						<div class="info-row">
-							<div class="info-label">
-								<span class="material-icons">dns</span>
-								<strong>Server Render Time:</strong>
-							</div>
-							<code class="mat-code">{data.serverTime}</code>
-							<div class="mat-chip server-chip">SSR</div>
-						</div>
-						{#if clientTime}
-							<div class="info-row">
-								<div class="info-label">
-									<span class="material-icons">computer</span>
-									<strong>Client Hydration Time:</strong>
-								</div>
-								<code class="mat-code">{clientTime}</code>
-								<div class="mat-chip client-chip">Client</div>
-							</div>
-						{/if}
-					</div>
-					<div class="mat-info-box">
-						<span class="material-icons">info</span>
-						<p class="mat-body-2">
-							The server time is rendered during SSR, while the client time 
-							appears after JavaScript loads. This shows the page is rendered 
-							server-side first, then hydrated on the client.
-						</p>
-					</div>
+			<div class="rounded-m3-xl border border-outline-variant/25 bg-surface-container p-5 sm:p-7">
+				<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+					<div><p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-text">Live render trace</p><h2 class="mt-2 font-outfit text-2xl font-bold">SSR → Hydration</h2></div>
+					<span class="w-fit rounded-m3-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">Connected</span>
+				</div>
+				<div class="mt-6 grid gap-3">
+					<div class="trace-row"><span class="material-symbols-rounded">dns</span><div><small>Server render</small><code>{data.serverTime}</code></div></div>
+					{#if clientTime}<div class="trace-row"><span class="material-symbols-rounded">devices</span><div><small>Client hydration</small><code>{clientTime}</code></div></div>{/if}
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
 </main>
 
 <style>
-	main {
-		background: #f5f5f5;
-		min-height: 100vh;
-		padding: 0;
-		font-family: 'Roboto', sans-serif;
-	}
-
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.app-bar {
-		background: #1976d2;
-		padding: 16px 24px;
-		box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.1);
-	}
-
-	.back-button {
-		color: white;
-		text-decoration: none;
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 16px;
-		border-radius: 4px;
-		transition: background-color 0.3s;
-		font-weight: 500;
-		text-transform: uppercase;
-		font-size: 0.875rem;
-		letter-spacing: 0.09em;
-	}
-
-	.back-button:hover {
-		background: rgba(255, 255, 255, 0.1);
-	}
-
-	.hero {
-		background: linear-gradient(180deg, #1976d2 0%, #1565c0 100%);
-		text-align: center;
-		color: white;
-		padding: 64px 24px;
-		margin-bottom: 32px;
-	}
-
-	.mat-display-1 {
-		font-size: 3rem;
-		font-weight: 400;
-		line-height: 1.2;
-		margin: 0 0 16px 0;
-		letter-spacing: -0.02em;
-	}
-
-	.mat-headline {
-		font-size: 1.5rem;
-		font-weight: 400;
-		line-height: 1.3;
-		margin: 0;
-		opacity: 0.9;
-	}
-
-	.content {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-		gap: 24px;
-		padding: 0 24px 32px;
-	}
-
-	.mat-card {
-		background: white;
-		border-radius: 4px;
-		overflow: hidden;
-		transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.elevation-4 {
-		box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.1);
-	}
-
-	.elevation-4:hover {
-		box-shadow: 0 4px 8px rgba(0,0,0,0.15), 0 8px 16px rgba(0,0,0,0.15);
-	}
-
-	.mat-card-header {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-		padding: 24px;
-		background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-		color: white;
-	}
-
-	.avatar {
-		width: 56px;
-		height: 56px;
-		border-radius: 50%;
-		background: rgba(255, 255, 255, 0.2);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.avatar .material-icons {
-		font-size: 32px;
-		color: white;
-	}
-
-	.header-text {
-		flex: 1;
-	}
-
-	.mat-card-content {
-		padding: 24px;
-	}
-
-	.mat-title {
-		font-size: 1.25rem;
-		font-weight: 500;
-		line-height: 1.6;
-		margin: 0 0 16px 0;
-		color: rgba(0,0,0,0.87);
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
-
-	.mat-subheading {
-		font-size: 1rem;
-		font-weight: 500;
-		opacity: 0.9;
-		margin: 0;
-	}
-
-	.mat-body-1 {
-		font-size: 1rem;
-		font-weight: 400;
-		line-height: 1.5;
-		color: rgba(0,0,0,0.6);
-		margin: 0;
-	}
-
-	.mat-body-2 {
-		font-size: 0.875rem;
-		font-weight: 400;
-		line-height: 1.5;
-		color: rgba(0,0,0,0.6);
-		margin: 0;
-	}
-
-	.title-icon {
-		color: #1976d2;
-	}
-
-	.chips-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 12px;
-	}
-
-	.mat-chip {
-		display: inline-flex;
-		align-items: center;
-		padding: 8px 16px;
-		border-radius: 16px;
-		font-size: 0.875rem;
-		font-weight: 500;
-		background: #e0e0e0;
-		color: rgba(0,0,0,0.87);
-	}
-
-	.mat-chip.mat-primary {
-		background: #e3f2fd;
-		color: #1976d2;
-	}
-
-	.ssr-demo {
-		grid-column: 1 / -1;
-	}
-
-	.time-info {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-		margin-bottom: 24px;
-	}
-
-	.info-row {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 12px;
-		padding: 16px;
-		background: #fafafa;
-		border-radius: 4px;
-		border-left: 4px solid #1976d2;
-	}
-
-	.info-label {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		color: rgba(0,0,0,0.87);
-		font-size: 0.875rem;
-	}
-
-	.info-label .material-icons {
-		font-size: 20px;
-		color: #1976d2;
-	}
-
-	.mat-code {
-		background: white;
-		padding: 4px 8px;
-		border-radius: 4px;
-		font-family: 'Roboto Mono', monospace;
-		font-size: 0.875rem;
-		border: 1px solid #e0e0e0;
-		color: #d32f2f;
-	}
-
-	.server-chip {
-		background: #1976d2;
-		color: white;
-		padding: 4px 12px;
-		font-size: 0.75rem;
-	}
-
-	.client-chip {
-		background: #ff4081;
-		color: white;
-		padding: 4px 12px;
-		font-size: 0.75rem;
-	}
-
-	.mat-info-box {
-		display: flex;
-		gap: 12px;
-		padding: 16px;
-		background: #e3f2fd;
-		border-radius: 4px;
-		border-left: 4px solid #2196f3;
-	}
-
-	.mat-info-box .material-icons {
-		color: #2196f3;
-		font-size: 20px;
-		flex-shrink: 0;
-	}
-
-	/* 태블릿 디바이스 (768px ~ 1024px) */
-	@media (max-width: 1024px) and (min-width: 769px) {
-		.content {
-			grid-template-columns: repeat(2, 1fr);
-			padding: 0 32px 32px;
-		}
-
-		.ssr-demo {
-			grid-column: 1 / -1;
-		}
-
-		.mat-display-1 {
-			font-size: 2.5rem;
-		}
-
-		.mat-headline {
-			font-size: 1.35rem;
-		}
-	}
-
-	/* 모바일 디바이스 (< 768px) */
-	@media (max-width: 768px) {
-		.app-bar {
-			padding: 12px 16px;
-		}
-
-		.hero {
-			padding: 48px 16px;
-		}
-
-		.mat-display-1 {
-			font-size: 2rem;
-		}
-
-		.mat-headline {
-			font-size: 1.25rem;
-		}
-
-		.content {
-			grid-template-columns: 1fr;
-			padding: 0 16px 24px;
-			gap: 16px;
-		}
-
-		.ssr-demo {
-			grid-column: 1;
-		}
-
-		.mat-card-content {
-			padding: 20px;
-		}
-
-		.mat-card-header {
-			padding: 40px 20px;
-		}
-
-		.avatar-large {
-			width: 100px;
-			height: 100px;
-		}
-
-		.avatar-large .material-icons {
-			font-size: 64px;
-		}
-
-		.info-row {
-			flex-direction: column;
-			align-items: flex-start;
-			padding: 12px;
-		}
-
-		.mat-code {
-			word-break: break-all;
-		}
-	}
-
-	/* 작은 모바일 디바이스 (< 480px) */
-	@media (max-width: 480px) {
-		.mat-display-1 {
-			font-size: 1.75rem;
-		}
-
-		.mat-headline {
-			font-size: 1.1rem;
-		}
-
-		.hero {
-			padding: 32px 16px;
-		}
-
-		.mat-card-content {
-			padding: 16px;
-		}
-
-		.mat-card-header {
-			padding: 32px 16px;
-		}
-
-		.avatar-large {
-			width: 80px;
-			height: 80px;
-		}
-
-		.avatar-large .material-icons {
-			font-size: 48px;
-		}
-
-		.info-item {
-			padding: 12px;
-		}
-
-		.mat-title {
-			font-size: 1.1rem;
-		}
-	}
+	.ambient { position: absolute; pointer-events: none; border-radius: 999px; filter: blur(90px); opacity: .55; }
+	.ambient-one { width: min(55vw, 700px); aspect-ratio: 1; top: -18%; right: -12%; background: rgba(85, 26, 139, .22); }
+	.ambient-two { width: min(42vw, 520px); aspect-ratio: 1; bottom: 0; left: -12%; background: rgba(150, 123, 182, .12); }
+	.stat { min-width: 0; border: 1px solid rgba(147,143,153,.16); border-radius: 16px; background: rgba(15,13,19,.5); padding: 14px 10px; text-align: center; }
+	.stat strong, .stat span { display: block; overflow: hidden; text-overflow: ellipsis; }
+	.stat strong { color: var(--md-sys-color-on-surface); font: 700 clamp(.75rem, 2.5vw, .95rem)/1.15 "Outfit", sans-serif; }
+	.stat span { margin-top: 5px; color: var(--md-sys-color-on-surface-variant); font-size: .65rem; }
+	.trace-row { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 12px; min-width: 0; border: 1px solid rgba(147,143,153,.16); border-radius: 16px; background: rgba(15,13,19,.48); padding: 12px; }
+	.trace-row > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: rgba(208,188,255,.1); color: var(--md-sys-color-primary-text); }
+	.trace-row div { min-width: 0; }
+	.trace-row small, .trace-row code { display: block; }
+	.trace-row small { margin-bottom: 5px; color: var(--md-sys-color-on-surface-variant); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+	.trace-row code { overflow: hidden; color: var(--md-sys-color-on-surface); font-size: clamp(.68rem, 2.2vw, .8rem); text-overflow: ellipsis; white-space: nowrap; }
+	@media (max-height: 760px) and (min-width: 900px) { .responsive-shell { padding-top: 104px; padding-bottom: 48px; } }
 </style>

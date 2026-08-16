@@ -1,6 +1,4 @@
 /* Global Theme & Typography */
-@import './theme/smui.css';
-
 @import "tailwindcss";
 
 @theme {
@@ -126,4 +124,50 @@ body {
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
   overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--md-sys-color-background);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+button, a, input, textarea {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary-text);
+  outline-offset: 3px;
+}
+
+/* Shared device-aware spacing: phone → laptop → 16-inch/4K desktop. */
+.responsive-shell {
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 1920px) {
+  .responsive-shell {
+    width: min(86vw, 1600px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
