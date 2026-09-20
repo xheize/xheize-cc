@@ -1,5 +1,6 @@
 import { dev } from "$app/environment";
 import { env } from "$env/dynamic/private";
+export { safeReturnTo } from './return-to.js';
 
 export const SESSION_COOKIE = "xheize_session";
 export const FLOW_COOKIE = "xheize_oidc_flow";
@@ -84,11 +85,6 @@ export function getAuthConfig() {
 		clientId,
 		clientSecret,
 	};
-}
-
-/** @param {string | null | undefined} value */
-export function safeReturnTo(value) {
-	return value?.startsWith("/") && !value.startsWith("//") ? value : "/";
 }
 
 /** @param {number} maxAge */

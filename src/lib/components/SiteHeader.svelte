@@ -1,7 +1,7 @@
 <script>
 	import { page } from "$app/state";
 
-	/** @type {{ active?: 'none' | 'home' | 'blog' | 'tech' }} */
+	/** @type {{ active?: 'none' | 'home' | 'blog' | 'tech' | 'about' | 'contact' }} */
 	let { active = "home" } = $props();
 
 	let y = $state(0);
@@ -14,6 +14,8 @@
 		{ id: "home", label: "Home", href: "/", icon: "home" },
 		{ id: "blog", label: "Blog", href: "/blog", icon: "article" },
 		{ id: "tech", label: "Tech", href: "/usedtech", icon: "settings_suggest" },
+        { id: "about", label: "About", href: "/about", icon: "person" },
+        { id: "contact", label: "Contact", href: "/contact", icon: "mail" },
 	];
 </script>
 
@@ -22,7 +24,7 @@
 <header class:scrolled={isScrolled} class="site-header">
 	<div class="header-inner">
 		<a href="/" class="brand" aria-label="Xheize 홈">
-			<span class="brand-mark material-symbols-rounded">fort</span>
+			<span aria-hidden="true" class="brand-mark material-symbols-rounded">fort</span>
 			<span class="brand-copy">
 				<strong>Xheize</strong>
 				<small>personal sandbox</small>
@@ -33,10 +35,11 @@
 			{#each navItems as item}
 				<a
 					href={item.href}
+					aria-label={item.label}
 					class:active={active === item.id}
 					aria-current={active === item.id ? "page" : undefined}
 				>
-					<span class="material-symbols-rounded">{item.icon}</span>
+					<span aria-hidden="true" class="material-symbols-rounded">{item.icon}</span>
 					<span>{item.label}</span>
 				</a>
 			{/each}
@@ -47,18 +50,18 @@
 				{#if user.picture}
 					<img src={user.picture} alt="" referrerpolicy="no-referrer" />
 				{:else}
-					<span class="material-symbols-rounded">account_circle</span>
+					<span aria-hidden="true" class="material-symbols-rounded">account_circle</span>
 				{/if}
 				<span class="account-name">{user.name ?? user.email ?? "Account"}</span>
-				<span class="material-symbols-rounded logout-icon">logout</span>
+				<span aria-hidden="true" class="material-symbols-rounded logout-icon">logout</span>
 			</a>
 		{:else if authConfigured}
-			<a class="account-pill sign-in" href={`/auth/login?returnTo=${encodeURIComponent(returnTo)}`}>
-				<span class="material-symbols-rounded">login</span>
+			<a class="account-pill sign-in" aria-label="로그인" href={`/auth/login?returnTo=${encodeURIComponent(returnTo)}`}>
+				<span aria-hidden="true" class="material-symbols-rounded">login</span>
 				<span class="account-name">Sign in</span>
 			</a>
 		{:else}
-			<div class="status-pill" aria-label="시스템 온라인"><span></span>Online</div>
+			<div class="status-pill" aria-label="개인 샌드박스">Sandbox</div>
 		{/if}
 	</div>
 </header>
@@ -67,11 +70,12 @@
 	{#each navItems as item}
 		<a
 			href={item.href}
+			aria-label={item.label}
 			class:active={active === item.id}
 			aria-current={active === item.id ? "page" : undefined}
 		>
 			<span class="icon-wrap">
-				<span class="material-symbols-rounded">{item.icon}</span>
+				<span aria-hidden="true" class="material-symbols-rounded">{item.icon}</span>
 			</span>
 			<small>{item.label}</small>
 		</a>
@@ -191,13 +195,6 @@
 		letter-spacing: 0.04em;
 	}
 
-	.status-pill span {
-		width: 7px;
-		height: 7px;
-		border-radius: 50%;
-		background: #34d399;
-		box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.1), 0 0 12px rgba(52, 211, 153, 0.55);
-	}
 
 	.account-pill {
 		display: inline-flex;
@@ -252,7 +249,7 @@
 			right: 12px;
 			bottom: max(10px, env(safe-area-inset-bottom));
 			display: grid;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(5, minmax(0, 1fr));
 			padding: 7px;
 			border: 1px solid rgba(147, 143, 153, 0.2);
 			border-radius: 24px;

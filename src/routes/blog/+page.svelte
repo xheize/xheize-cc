@@ -1,54 +1,10 @@
 <script>
-	import { fade } from "svelte/transition";
-	import SiteHeader from "$lib/components/SiteHeader.svelte";
-
-	// Svelte 5 Runes for state management
-	let { data } = $props();
-	let posts = $derived(data.posts || []);
-
-
-	// Filter and Selection states
-	let selectedCategory = $state("All");
-	/** @type {number | null} */
-	let selectedPostId = $state(null);
-
-	const categories = ["All", "Frontend", "DevOps", "Infrastructure"];
-
-	// Derive filtered posts using Rune
-	let filteredPosts = $derived(
-		selectedCategory === "All"
-			? posts
-			: posts.filter((post) => post.category === selectedCategory)
-	);
-
-	// Get selected post details
-	let currentPost = $derived(
-		posts.find((p) => p.id === selectedPostId)
-	);
-
-	/**
-	 * Select a post to read
-
-	// Derive filtered posts using Rune
-	let filteredPosts = $derived(
-		selectedCategory === "All"
-			? posts
-			: posts.filter((post) => post.category === selectedCategory)
-	);
-
-	// Get selected post details
-	let currentPost = $derived(
-		posts.find((p) => p.id === selectedPostId)
-	);
-
-	/**
-	 * Select a post to read
-	 * @param {number} id
-	 */
-	function selectPost(id) {
-		selectedPostId = id;
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
+ import { fade } from 'svelte/transition';
+ import SiteHeader from '$lib/components/SiteHeader.svelte';
+ let { data } = $props();
+ let selectedCategory = $state('All');
+ const categories = ['All', 'Frontend', 'DevOps', 'Infrastructure'];
+ let filteredPosts = $derived(selectedCategory === 'All' ? data.posts : data.posts.filter((post) => post.category === selectedCategory));
 </script>
 
 <svelte:head>
@@ -56,14 +12,6 @@
 	<meta
 		name="description"
 		content="인프라 가상화, 컨테이너 오케스트레이션, 그리고 프론트엔드 최신 스택에 대한 기술적 고민을 기록한 블로그."
-	/>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500;700&display=swap"
-		rel="stylesheet"
-	/>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-		rel="stylesheet"
 	/>
 </svelte:head>
 
@@ -81,7 +29,7 @@
 	></div>
 
 	<div class="responsive-shell pt-24 sm:pt-28 pb-12">
-		{#if selectedPostId === null}
+
 			<!-- --- POST LIST VIEW --- -->
 			<section class="text-center py-5 md:py-10 max-w-3xl mx-auto mb-4 sm:mb-6">
 				<h1
@@ -99,6 +47,7 @@
 				{#each categories as cat}
 					<button
 						onclick={() => (selectedCategory = cat)}
+                        aria-pressed={selectedCategory === cat}
 						class="px-5 py-2.5 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-200 border border-outline-variant/20 whitespace-nowrap
 						{selectedCategory === cat
 							? 'bg-primary text-on-primary shadow-m3-elevation-1'
@@ -139,55 +88,17 @@
 						<!-- Card Footer Action -->
 						<div class="border-t border-outline-variant/10 pt-4 flex items-center justify-between">
 							<span class="text-[11px] font-mono text-on-surface-variant/70">{post.readTime}</span>
-							<button
-								onclick={() => selectPost(post.id)}
+							<a href={`/blog/${post.slug}`}
 								class="flex items-center gap-1 text-primary-text font-outfit font-bold text-xs uppercase hover:underline cursor-pointer bg-transparent border-none p-0"
 							>
 								<span>Read Article</span>
-								<span class="material-symbols-rounded text-xs transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-							</button>
+								<span aria-hidden="true" class="material-symbols-rounded text-xs transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+							</a>
 						</div>
 					</div>
 				{/each}
 			</div>
-		{:else}
-			<!-- --- POST DETAIL VIEW --- -->
-			<div class="max-w-4xl mx-auto bg-surface-container border border-outline-variant/30 rounded-[20px] sm:rounded-m3-xl p-5 sm:p-7 md:p-10 shadow-m3-elevation-2 backdrop-blur-md">
-				<!-- Back button -->
-				<button
-					onclick={() => (selectedPostId = null)}
-					class="mb-6 flex items-center gap-1.5 text-on-surface-variant hover:text-primary-text font-outfit font-bold text-xs uppercase tracking-wider cursor-pointer bg-transparent border-none p-0 transition-colors"
-				>
-					<span class="material-symbols-rounded text-sm">arrow_back</span>
-					<span>Back to list</span>
-				</button>
 
-				{#if currentPost}
-					<!-- Meta -->
-					<div class="flex items-center gap-3 mb-4 text-xs font-mono">
-						<span class="text-primary-text bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-m3-xs font-bold uppercase">
-							{currentPost.category}
-						</span>
-						<span class="text-on-surface-variant">{currentPost.date}</span>
-						<span class="text-on-surface-variant">•</span>
-						<span class="text-on-surface-variant">{currentPost.readTime}</span>
-					</div>
-
-					<!-- Title -->
-					<h1 class="font-outfit font-extrabold text-3xl md:text-4xl text-on-surface mb-6 leading-tight">
-						{currentPost.title}
-					</h1>
-
-					<!-- Article Content -->
-					<article class="prose prose-invert max-w-none font-roboto text-sm md:text-base leading-relaxed text-on-surface-variant/90 space-y-6">
-						<!-- Content is whitespace pre-line to format properly -->
-						<p class="whitespace-pre-line">
-							{currentPost.content}
-						</p>
-					</article>
-				{/if}
-			</div>
-		{/if}
 	</div>
 
 	<!-- Footer -->
