@@ -140,7 +140,7 @@ export function clearSession(cookies) {
 /** @param {string} pathname */
 export function isProtectedPath(pathname) {
 	if (!isAuthConfigured()) return false;
-	const configured = env.AUTH_PROTECTED_ROUTES?.split(",").map((path) => path.trim()).filter(Boolean) ?? ["/aichat"];
+	const configured = env.AUTH_PROTECTED_ROUTES?.split(",").map((path) => path.trim()).filter(Boolean) ?? [];
 	return configured.some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
 
