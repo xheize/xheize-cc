@@ -1,5 +1,5 @@
 variables:
-  - &nodejs_image 'node:20-alpine'
+  - &nodejs_image 'node:24-alpine'
   - &buildkit_image 'moby/buildkit:v0.31.0'
 
 when:
@@ -11,6 +11,9 @@ steps:
     commands:
       - npm ci
       - npm run check
+      - npm test
+      - npm run build
+      - npm run test:smoke
     when:
       event: [push, pull_request]
       branch: [dev, main]

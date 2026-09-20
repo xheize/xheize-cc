@@ -1,6 +1,6 @@
 # xheize-cc
 
-Personal portal and technology sandbox infrastructure dashboard built with **SvelteKit (Svelte 5)**. 
+Personal portal and technology sandbox infrastructure dashboard built with **SvelteKit (Svelte 5)**.
 
 Metaphorically designed as a personal "Sandbox (모래성)" portal site that aggregates infrastructure status and personal articles.
 
@@ -90,12 +90,19 @@ src/
   ├── lib/            # Shared libraries, components, assets
   ├── routes/         # Page routes and SvelteKit endpoints
   │   ├── about/      # Developer profile page
-  │   ├── blog/       # Technical log articles (Svelte 5, Proxmox, DevOps, K8s)
+  │   ├── blog/       # Article list and /blog/[slug] detail routes
   │   ├── contact/    # Simulated feedback contact form
   │   ├── usedtech/   # Visual tech stack dictionary
   │   ├── +page.svelte# Main interactive storyteller landing dashboard
   │   └── +layout.svelte
   ├── theme/          # SMUI SASS configurations and M3 themes
-  ├── app.scss        # Global CSS variable theme mapping (Tailwind v4 ready)
+  ├── app.css        # Global CSS variable theme mapping (Tailwind v4 ready)
   └── hooks.server.js # 자체 sso-server OIDC 세션 및 보호 경로 처리
 ```
+
+## Content and page behavior
+
+- Blog articles live in `src/lib/data/posts.js`. Each unique slug is a permanent `/blog/[slug]` URL. Markdown is rendered and sanitized on the server.
+- The home article count uses the shared article data. System metrics are explicitly labeled as demo data, not live monitoring.
+- Contact is a UI demo only; it does not send or store messages. External delivery is intentionally not connected.
+- Use Node.js 24 (also used by Docker and CI). Run `npm test`, `npm run check`, `npm run build`, and `npm run test:smoke` before shipping changes.

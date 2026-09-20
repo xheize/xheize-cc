@@ -1,5 +1,5 @@
 <script>
-	import { goto } from "$app/navigation";
+	let { data } = $props();
 	import SiteHeader from "$lib/components/SiteHeader.svelte";
 
 	// --- Svelte 5 Runes for State Management ---
@@ -36,10 +36,7 @@
 			: Math.max(0, 40 * (1 - (scrollRatio - 0.3) / 0.7)),
 	);
 
-	/** @param {string} url */
-	function redirectToPage(url) {
-		goto(url);
-	}
+
 
 	// Dynamic tracking of total document scroll height on the client
 	let documentHeight = $state(3000);
@@ -96,25 +93,17 @@
 		content="모래성(Sandbox) 메타포로 구축된 Svelte 5 기반 개인 인프라 및 기술 포털 서비스 웹사이트."
 	/>
 	<!-- Typography: Outfit & Roboto -->
-	<link
-		href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500;700&display=swap"
-		rel="stylesheet"
-	/>
 	<!-- Material Symbols Rounded -->
-	<link
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-		rel="stylesheet"
-	/>
 </svelte:head>
 
 <SiteHeader active="home" />
 
 <!-- Main Scroll Container -->
 <main class="w-full relative bg-background text-on-background">
-	<!-- 
-		Storytelling Sticky Track: 
-		Takes up 200vh of scrolling. 
-		Inside, we pin the viewport and overlay Section 1 (Landing) and Section 2 (Narrative) 
+	<!--
+		Storytelling Sticky Track:
+		Takes up 200vh of scrolling.
+		Inside, we pin the viewport and overlay Section 1 (Landing) and Section 2 (Narrative)
 		to perform crossfade transitions based on scroll variables.
 	-->
 	<div class="relative w-full h-[200vh]">
@@ -308,7 +297,7 @@
 						<div
 							class="flex items-center gap-2 text-primary-text font-outfit font-bold text-sm tracking-wider mb-2 uppercase"
 						>
-							<span class="material-symbols-rounded text-sm"
+							<span aria-hidden="true" class="material-symbols-rounded text-sm"
 								>edit_note</span
 							>
 							<span>변경 사항</span>
@@ -348,8 +337,7 @@
 					class="font-roboto text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-2xl px-4"
 				>
 					개발을 통해 얻은 지식을 공유하고 유저로서 사용하기 위해
-					만들었습니다. 즐겁게 사용해주시면 됩니다. 대부분의 기능은
-					구분을 위해 로그인이 필요한점 양해 부탁드립니다.
+					만들었습니다. 블로그와 기술 소개를 자유롭게 둘러보세요.
 				</p>
 				<p
 					class="font-roboto text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-2xl px-4"
@@ -358,15 +346,14 @@
 				</p>
 
 				<!-- Spec Button -->
-				<button
-					onclick={() => redirectToPage("/usedtech")}
+				<a href="/usedtech"
 					class="flex items-center gap-2 bg-primary text-on-primary hover:bg-opacity-90 active:scale-98 transition-all px-8 py-3 rounded-m3-full font-outfit font-semibold shadow-m3-elevation-2"
 				>
-					<span class="material-symbols-rounded"
+					<span aria-hidden="true" class="material-symbols-rounded"
 						>settings_suggest</span
 					>
 					<span>관련 기술 확인하기</span>
-				</button>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -382,7 +369,7 @@
 				<!-- <div
 					class="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-m3-full text-xs font-outfit font-semibold tracking-wider uppercase mb-4"
 				>
-					<span class="material-symbols-rounded text-sm"
+					<span aria-hidden="true" class="material-symbols-rounded text-sm"
 						>dashboard</span
 					>
 					<span>Service Dashboard</span>
@@ -402,7 +389,7 @@
 
 			<!-- Grid Menu (M3 Cards) -->
 			<div
-				class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 sm:gap-6 w-full items-stretch"
+				class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full items-stretch"
 			>
 
 				<!-- Card 2: Tech Blog -->
@@ -416,13 +403,13 @@
 							<div
 								class="w-12 h-12 rounded-m3-md bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-105 transition-transform"
 							>
-								<span class="material-symbols-rounded text-2xl"
+								<span aria-hidden="true" class="material-symbols-rounded text-2xl"
 									>article</span
 								>
 							</div>
 							<span
 								class="font-mono text-xs text-secondary/80 font-bold bg-secondary/5 px-2.5 py-1 rounded-m3-sm"
-								>POSTS (12)</span
+								>POSTS ({data.postCount})</span
 							>
 						</div>
 
@@ -448,7 +435,7 @@
 							class="w-full flex items-center justify-center gap-2 border-2 border-outline-variant text-secondary py-2.5 px-5 rounded-m3-full font-outfit font-semibold hover:bg-secondary/10 hover:border-secondary/30 active:scale-98 transition-all text-sm text-center decoration-none"
 						>
 							<span>블로그 읽기</span>
-							<span class="material-icons-round text-base"
+							<span aria-hidden="true" class="material-symbols-rounded text-base"
 								>chrome_reader_mode</span
 							>
 						</a>
@@ -466,7 +453,7 @@
 							<div
 								class="w-12 h-12 rounded-m3-md bg-tertiary/10 flex items-center justify-center text-tertiary"
 							>
-								<span class="material-icons-round text-2xl"
+								<span aria-hidden="true" class="material-symbols-rounded text-2xl"
 									>dns</span
 								>
 							</div>
@@ -476,7 +463,7 @@
 								<span
 									class="h-1.5 w-1.5 rounded-full bg-emerald-400"
 								></span>
-								<span>OPERATIONAL</span>
+								<span>DEMO</span>
 							</div>
 						</div>
 
@@ -484,10 +471,11 @@
 						<h3
 							class="font-outfit font-bold text-xl md:text-2xl text-on-surface mb-3"
 						>
-							System Status
+							System Status Demo
 						</h3>
 
-						<!-- M3 Interactive gauges -->
+						<p class="text-sm text-on-surface-variant mb-5">화면 시연용 가상 데이터입니다. 실제 서버 상태와 연결되어 있지 않습니다.</p>
+                        <!-- M3 Interactive gauges -->
 						<div class="space-y-4 mb-4">
 							<!-- CPU Gauge -->
 							<div>
@@ -568,7 +556,7 @@
 						<button
 							onclick={() =>
 								alert(
-									`인프라 상세 사양:\n- CPU: AMD EPYC 8-Core\n- RAM: 32GB ECC DDR5\n- OS: Alpine Linux 3.19\n- Dockerized Microservices\n- Uptime: ${uptimeDays}일 가동 중`,
+									`데모 인프라 예시 (실제 측정값 아님):\n- CPU: AMD EPYC 8-Core\n- RAM: 32GB ECC DDR5\n- OS: Alpine Linux 3.19\n- Dockerized Microservices\n- Uptime: ${uptimeDays}일 가동 중`,
 								)}
 							class="text-xs text-primary-text font-outfit font-bold tracking-wider uppercase hover:underline cursor-pointer bg-transparent border-none p-0"
 						>
@@ -584,7 +572,7 @@
 	<button
 		onclick={() =>
 			window.scrollBy({ top: innerHeight, behavior: "smooth" })}
-		class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
+		class="fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
 		style="opacity: {indicatorOpacity}; pointer-events: {indicatorOpacity >
 		0.05
 			? 'auto'
@@ -594,7 +582,7 @@
 			class="font-outfit text-[10px] uppercase tracking-widest opacity-80"
 			>Scroll Down</span
 		>
-		<span class="material-symbols-rounded animate-bounce text-xl mt-1"
+		<span aria-hidden="true" class="material-symbols-rounded animate-bounce text-xl mt-1"
 			>keyboard_double_arrow_down</span
 		>
 	</button>

@@ -1,5 +1,5 @@
 import { error, redirect } from "@sveltejs/kit";
-import { clearAuthFlow, getAuthConfig, getOIDCMetadata, readAuthFlow, setSession } from "$lib/server/auth";
+import { clearAuthFlow, getAuthConfig, getOIDCMetadata, readAuthFlow, safeReturnTo, setSession } from "$lib/server/auth";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ cookies, url, fetch }) {
@@ -54,5 +54,5 @@ export async function GET({ cookies, url, fetch }) {
 		error(502, "SSO 토큰 또는 사용자 정보를 확인하지 못했습니다.");
 	}
 
-	redirect(303, flow.returnTo);
+	redirect(303, safeReturnTo(flow.returnTo));
 }

@@ -54,7 +54,7 @@
 			id: "hypervisor-proxmox",
 			name: "proxmox",
 			category: "infra",
-			icon: "vm_array",
+			icon: "storage",
 			tag: "Baremetal hypervisor",
 			desc: "베어메탈 하이퍼바이저로, KVM과 LXC를 통합 관리하여 효율적인 가상화 환경을 제공합니다.",
 			why: "Proxmox VE는 오픈소스 기반의 서버 가상화 관리 플랫폼으로, KVM과 LXC 컨테이너 기술을 통합하여 단일 인터페이스로 물리적 서버와 가상 머신을 효율적으로 관리할 수 있습니다.",
@@ -64,7 +64,7 @@
 			id: "os-ubuntu-server",
 			name: "ubuntu-server",
 			category: "os",
-			icon: "os",
+			icon: "computer",
 			tag: "Linux Distribution",
 			desc: "서버 운영을 위한 리눅스 배포판으로, 안정적인 패키지 관리 시스템과 뛰어난 호환성으로 서버 환경을 효율적으로 관리할 수 있습니다.",
 			why: "Ubuntu Server는 오픈소스 기반의 서버 운영체제로, 안정적인 패키지 관리 시스템과 뛰어난 호환성으로 서버 운영 환경을 효율적으로 관리할 수 있습니다.",
@@ -77,7 +77,7 @@
 			id: "l4-lb",
 			name: "metallb",
 			category: "software",
-			icon: "setting",
+			icon: "settings",
 			tag: "LoadBalancer",
 			desc: "쿠버네티스 클러스터 내부 서비스들에 로컬 네트워크 대역의 외부 IP를 동적으로 할당해주는 레이어 2/BGP 로드밸런서입니다.",
 			why: "퍼블릭 클라우드가 아닌 베어메탈 온프레미스 인프라 환경에서 External IP를 정상적으로 획득하여 외부 트래픽을 인입하기 위해 필수적으로 사용합니다.",
@@ -107,7 +107,7 @@
 			id: "l7-lb",
 			name: "Traefik",
 			category: "software",
-			icon: "switch_access",
+			icon: "router",
 			tag: "LoadBalancer",
 			desc: "컨테이너 환경에 고도로 최적화된 리버스 프록시이자 Ingress Controller로, 유입되는 트래픽의 호스트 헤더 기반 정밀 라우팅 및 SSL/TLS 인증서 자동 갱신을 지원합니다.",
 			why: "마이크로서비스들의 다양한 서브도메인을 선언적으로 매핑하고, Let's Encrypt를 통한 와일드카드 HTTPS 보안 인증서를 완전 자동으로 관리하기 위해 도입했습니다.",
@@ -201,14 +201,6 @@
 <svelte:head>
 	<title>Tech - Xheize Sandbox</title>
 	<meta name="description" content="현재 사용중인 기술들" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500;700&display=swap"
-		rel="stylesheet"
-	/>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-		rel="stylesheet"
-	/>
 </svelte:head>
 
 <main
@@ -333,7 +325,7 @@
 					<h3
 						class="font-outfit font-bold text-sm tracking-wider text-primary-text mb-3 uppercase flex items-center gap-1.5"
 					>
-						<span class="material-symbols-rounded text-sm"
+						<span aria-hidden="true" class="material-symbols-rounded text-sm"
 							>construction</span
 						>
 						스택 정보 개요
@@ -381,58 +373,63 @@
 				>
 					<button
 						onclick={() => (activeFilter = "all")}
+                        aria-pressed={activeFilter === "all"}
 						class="flex-1 min-w-[70px] py-2.5 px-4 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap {activeFilter ===
 						'all'
 							? 'bg-primary text-on-primary'
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
-						<span class="material-symbols-rounded text-sm"
+						<span aria-hidden="true" class="material-symbols-rounded text-sm"
 							>grid_view</span
 						>
 						<span>ALL</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "language")}
+                        aria-pressed={activeFilter === "language"}
 						class="flex-1 min-w-[70px] py-2.5 px-4 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap {activeFilter ===
 						'language'
 							? 'bg-primary text-on-primary'
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
-						<span class="material-symbols-rounded text-sm"
+						<span aria-hidden="true" class="material-symbols-rounded text-sm"
 							>code</span
 						>
 						<span>LANGUAGES</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "framework")}
+                        aria-pressed={activeFilter === "framework"}
 						class="flex-1 min-w-[70px] py-2.5 px-4 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap {activeFilter ===
 						'framework'
 							? 'bg-primary text-on-primary'
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
-						<span class="material-symbols-rounded text-sm">web</span
+						<span aria-hidden="true" class="material-symbols-rounded text-sm">web</span
 						>
 						<span>FRAMEWORKS</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "infra")}
+                        aria-pressed={activeFilter === "infra"}
 						class="flex-1 min-w-[70px] py-2.5 px-4 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap {activeFilter ===
 						'infra'
 							? 'bg-primary text-on-primary'
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
-						<span class="material-symbols-rounded text-sm">dns</span
+						<span aria-hidden="true" class="material-symbols-rounded text-sm">dns</span
 						>
 						<span>INFRASTRUCTURE</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "software")}
+                        aria-pressed={activeFilter === "software"}
 						class="flex-1 min-w-[70px] py-2.5 px-4 rounded-m3-full font-outfit text-xs font-semibold tracking-wider transition-all duration-300 flex items-center justify-center gap-1.5 whitespace-nowrap {activeFilter ===
 						'software'
 							? 'bg-primary text-on-primary'
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
-						<span class="material-symbols-rounded text-sm">construction</span>
+						<span aria-hidden="true" class="material-symbols-rounded text-sm">construction</span>
 						<span>SOFTWARE</span>
 					</button>
 				</div>
@@ -442,7 +439,8 @@
 					{#each filteredTechnologies as tech (tech.id + '-' + tech.category + '-' + tech.name)}
 						<button
 							onclick={() => toggleDetails(tech.id)}
-							class="w-full text-left bg-surface-container hover:bg-surface-container-high border rounded-m3-xl p-5 shadow-sm transition-all duration-300 group focus:outline-none flex flex-col justify-between {selectedTechId ===
+                            aria-expanded={selectedTechId === tech.id}
+							class="w-full text-left bg-surface-container hover:bg-surface-container-high border rounded-m3-xl p-5 shadow-sm transition-all duration-300 group flex flex-col justify-between {selectedTechId ===
 							tech.id
 								? 'border-primary/40 shadow-m3-elevation-2 scale-[1.01]'
 								: 'border-outline-variant/30'}"
@@ -471,8 +469,7 @@
 									<div
 										class="w-10 h-10 rounded-m3-md bg-secondary-container/20 border border-secondary-container/30 flex items-center justify-center text-secondary group-hover:scale-105 transition-transform duration-300"
 									>
-										<span
-											class="material-symbols-rounded text-xl"
+										<span aria-hidden="true" class="material-symbols-rounded text-xl"
 											>{tech.icon}</span
 										>
 									</div>
@@ -526,8 +523,7 @@
 											? "Close details"
 											: "Click for detail context"}</span
 									>
-									<span
-										class="material-symbols-rounded text-xs transition-transform duration-300 {selectedTechId ===
+									<span aria-hidden="true" class="material-symbols-rounded text-xs transition-transform duration-300 {selectedTechId ===
 										tech.id
 											? 'rotate-180'
 											: ''}"
@@ -544,8 +540,7 @@
 					<div
 						class="text-center py-16 bg-surface-container rounded-m3-xl border border-outline-variant/30 flex flex-col items-center justify-center"
 					>
-						<span
-							class="material-symbols-rounded text-4xl text-on-surface-variant mb-2 animate-bounce"
+						<span aria-hidden="true" class="material-symbols-rounded text-4xl text-on-surface-variant mb-2 animate-bounce"
 							>search_off</span
 						>
 						<p

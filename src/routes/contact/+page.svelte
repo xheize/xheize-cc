@@ -15,37 +15,36 @@
 <svelte:head>
 	<title>Contact - Xheize Sandbox</title>
 	<meta name="description" content="Xheize에게 프로젝트와 기술 이야기를 남겨주세요." />
-	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
 </svelte:head>
 
-<SiteHeader active="none" />
+<SiteHeader active="contact" />
 
 <main class="relative min-h-screen overflow-hidden bg-background text-on-background font-roboto">
 	<div class="ambient"></div>
 	<div class="responsive-shell relative z-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
 		<section class="mx-auto max-w-3xl text-center">
-			<div class="mb-5 inline-flex items-center gap-2 rounded-m3-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-wider text-primary-text"><span class="material-symbols-rounded text-sm">forum</span> OPEN CHANNEL</div>
+			<div class="mb-5 inline-flex items-center gap-2 rounded-m3-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-wider text-primary-text"><span aria-hidden="true" class="material-symbols-rounded text-sm">forum</span> OPEN CHANNEL</div>
 			<h1 class="font-outfit text-[clamp(2.6rem,7vw,5.5rem)] font-extrabold leading-[0.98] tracking-[-0.04em] text-balance">같이 만들 이야기가<br /><span class="text-primary-text">있으신가요?</span></h1>
 			<p class="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-on-surface-variant sm:text-lg">인프라, 웹 서비스, 작은 실험까지. 간단한 메시지를 남겨주세요.</p>
 		</section>
 
 		<div class="mx-auto mt-9 grid max-w-6xl gap-5 lg:mt-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
 			<section class="rounded-m3-xl border border-outline-variant/30 bg-surface-container/90 p-5 shadow-m3-elevation-2 backdrop-blur-xl sm:p-8">
-				<div class="mb-6 flex items-center justify-between gap-4"><div><p class="text-xs font-semibold uppercase tracking-[0.14em] text-primary-text">Send a message</p><h2 class="mt-2 font-outfit text-2xl font-bold">무엇을 도와드릴까요?</h2></div><span class="material-symbols-rounded text-3xl text-secondary">send</span></div>
-				{#if formSubmitted}<div class="mb-5 flex items-center gap-2 rounded-m3-lg border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm text-emerald-200" role="status"><span class="material-symbols-rounded">check_circle</span> 데모 메시지가 접수되었습니다.</div>{/if}
-				<form onsubmit={handleSubmit} class="grid gap-5">
+				<div class="mb-6 flex items-center justify-between gap-4"><div><p class="text-xs font-semibold uppercase tracking-[0.14em] text-primary-text">Form preview</p><h2 class="mt-2 font-outfit text-2xl font-bold">무엇을 도와드릴까요?</h2></div><span aria-hidden="true" class="material-symbols-rounded text-3xl text-secondary">send</span></div>
+				{#if formSubmitted}<div class="mb-5 flex items-center gap-2 rounded-m3-lg border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm text-emerald-200" role="status"><span aria-hidden="true" class="material-symbols-rounded">check_circle</span> 데모 동작 확인 완료. 메시지는 전송되거나 저장되지 않았습니다.</div>{/if}
+				<p id="contact-demo-note" class="mb-5 text-sm text-on-surface-variant">현재 문의 연동 준비 중입니다. 입력 내용은 전송·저장되지 않으며 아래 폼은 화면 확인용입니다. 비공개 정보는 입력하지 마세요.</p>
+                <form aria-describedby="contact-demo-note" onsubmit={handleSubmit} class="grid gap-5">
 					<label><span>이름</span><input type="text" name="name" autocomplete="name" placeholder="어떻게 불러드릴까요?" required /></label>
 					<label><span>이메일</span><input type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required /></label>
 					<label><span>메시지</span><textarea name="message" rows="6" placeholder="프로젝트나 궁금한 점을 편하게 적어주세요." required></textarea></label>
-					<button type="submit" disabled={!mounted}><span>{mounted ? "메시지 보내기" : "준비 중"}</span><span class="material-symbols-rounded">arrow_forward</span></button>
+					<button type="submit" disabled={!mounted}><span>{mounted ? "데모 확인하기" : "준비 중"}</span><span aria-hidden="true" class="material-symbols-rounded">arrow_forward</span></button>
 				</form>
 			</section>
 
 			<aside class="grid gap-4">
-				<a class="contact-card" href="https://github.com/xheize" target="_blank" rel="noopener noreferrer"><span class="icon material-symbols-rounded">code</span><span><small>GitHub</small><strong>@xheize</strong></span><span class="material-symbols-rounded">north_east</span></a>
+				<a class="contact-card" href="https://github.com/xheize" target="_blank" rel="noopener noreferrer"><span class="icon material-symbols-rounded">code</span><span><small>GitHub</small><strong>@xheize</strong></span><span aria-hidden="true" class="material-symbols-rounded">north_east</span></a>
 				<div class="contact-card"><span class="icon material-symbols-rounded">location_on</span><span><small>Location</small><strong>Remote · Korea</strong></span></div>
-				<div class="rounded-m3-xl border border-outline-variant/20 bg-surface-container-low p-5 sm:p-6"><span class="material-symbols-rounded text-2xl text-primary-text">info</span><h3 class="mt-4 font-outfit text-lg font-bold">Demo channel</h3><p class="mt-2 text-sm leading-relaxed text-on-surface-variant">현재 폼은 인터페이스 데모이며 실제 메일을 전송하지 않습니다.</p></div>
+				<div class="rounded-m3-xl border border-outline-variant/20 bg-surface-container-low p-5 sm:p-6"><span aria-hidden="true" class="material-symbols-rounded text-2xl text-primary-text">info</span><h3 class="mt-4 font-outfit text-lg font-bold">Demo channel</h3><p class="mt-2 text-sm leading-relaxed text-on-surface-variant">현재 폼은 인터페이스 데모이며 실제 메일을 전송하지 않습니다.</p></div>
 			</aside>
 		</div>
 	</div>
