@@ -1,7 +1,7 @@
 <script>
 	import { page } from "$app/state";
 
-	/** @type {{ active?: 'none' | 'home' | 'blog' | 'tech' | 'chat' }} */
+	/** @type {{ active?: 'none' | 'home' | 'blog' | 'tech' }} */
 	let { active = "home" } = $props();
 
 	let y = $state(0);
@@ -14,7 +14,6 @@
 		{ id: "home", label: "Home", href: "/", icon: "home" },
 		{ id: "blog", label: "Blog", href: "/blog", icon: "article" },
 		{ id: "tech", label: "Tech", href: "/usedtech", icon: "settings_suggest" },
-		{ id: "chat", label: "AI Chat", href: "/aichat", icon: "chat" },
 	];
 </script>
 
@@ -253,7 +252,7 @@
 			right: 12px;
 			bottom: max(10px, env(safe-area-inset-bottom));
 			display: grid;
-			grid-template-columns: repeat(4, minmax(0, 1fr));
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 			padding: 7px;
 			border: 1px solid rgba(147, 143, 153, 0.2);
 			border-radius: 24px;
