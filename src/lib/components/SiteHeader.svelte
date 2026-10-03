@@ -21,7 +21,7 @@
 
 <svelte:window bind:scrollY={y} />
 
-<header class:scrolled={isScrolled} class="site-header">
+<header class:scrolled={isScrolled} class:home-header={active === 'home'} class="site-header">
 	<div class="header-inner">
 		<a href="/" class="brand" aria-label="Xheize 홈">
 			<span aria-hidden="true" class="brand-mark material-symbols-rounded">fort</span>
@@ -45,6 +45,10 @@
 			{/each}
 		</nav>
 
+		{#if active === 'home'}
+			<a class="intro-skip" href="#dashboard">서비스 바로 보기<span aria-hidden="true">↓</span></a>
+		{/if}
+
 		{#if user}
 			<a class="account-pill" href="/auth/logout?returnTo=/" aria-label={`${user.name ?? user.email ?? "사용자"} 로그아웃`}>
 				{#if user.picture}
@@ -60,7 +64,7 @@
 				<span aria-hidden="true" class="material-symbols-rounded">login</span>
 				<span class="account-name">Sign in</span>
 			</a>
-		{:else}
+		{:else if active !== 'home'}
 			<div class="status-pill" aria-label="개인 샌드박스">Sandbox</div>
 		{/if}
 	</div>
@@ -83,6 +87,21 @@
 </nav>
 
 <style>
+	.intro-skip { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 12px; flex-shrink: 0; border: 1px solid rgba(208,188,255,.25); border-radius: 999px; color: var(--md-sys-color-primary-text); background: var(--md-sys-color-surface-container); text-decoration: none; white-space: nowrap; font-size: .75rem; font-weight: 600; }
+	.intro-skip:hover { background: var(--md-sys-color-primary-container); }
+	@media (min-width: 641px) and (max-width: 1100px) {
+		.home-header .desktop-nav a { padding-inline: 12px; }
+		.home-header .desktop-nav a span:last-child { display: none; }
+	}
+	@media (max-width: 640px) {
+		.home-header .header-inner { gap: 10px; }
+		.intro-skip { margin-left: auto; padding-inline: 10px; }
+		.home-header .account-pill { margin-left: 0; width: 38px; flex-shrink: 0; padding: 4px; justify-content: center; }
+		.home-header .account-name { display: none; }
+	}
+	@media (max-width: 380px) {
+		.home-header .brand-copy { display: none; }
+	}
 	.site-header {
 		position: fixed;
 		inset: 0 0 auto;

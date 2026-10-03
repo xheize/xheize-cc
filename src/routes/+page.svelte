@@ -38,21 +38,8 @@
 
 
 
-	// Dynamic tracking of total document scroll height on the client
-	let documentHeight = $state(3000);
-	$effect(() => {
-		// Svelte 5 reactive trigger on scroll/resize
-		y;
-		innerHeight;
-		if (typeof document !== "undefined") {
-			documentHeight = document.documentElement.scrollHeight;
-		}
-	});
-
-	// Derive indicator opacity: 1 normally, fades to 0 as user nears the bottom (within 150px)
-	let indicatorOpacity = $derived(
-		Math.max(0, Math.min(1, (documentHeight - (y + innerHeight)) / 150)),
-	);
+	// The introductory hint disappears as soon as the visitor starts scrolling.
+	let indicatorOpacity = $derived(Math.max(0, 1 - y / 120));
 
 	// --- Lifecycle effect for system status animation ---
 	$effect(() => {
@@ -106,9 +93,9 @@
 		Inside, we pin the viewport and overlay Section 1 (Landing) and Section 2 (Narrative)
 		to perform crossfade transitions based on scroll variables.
 	-->
-	<div class="relative w-full h-[200vh]">
+	<div class="story-track relative w-full h-[200vh]">
 		<div
-			class="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 pt-16"
+			class="story-stage sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 pt-16"
 		>
 			<!-- Background Glowing Core (M3 Ambient Design) -->
 			<div
@@ -118,7 +105,7 @@
 
 			<!-- --- SECTION 1: LANDING OVERLAY --- -->
 			<div
-					class="w-full max-w-5xl flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
+					class="story-landing w-full max-w-5xl flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
 				style="pointer-events: {landingOpacity > 0.01
 					? 'auto'
 					: 'none'};"
@@ -281,7 +268,7 @@
 
 				<!-- Fadeable text elements container -->
 				<div
-					class="w-full flex flex-col items-center justify-center transition-opacity duration-75"
+					class="landing-copy w-full flex flex-col items-center justify-center transition-opacity duration-75"
 					style="opacity: {landingOpacity};"
 				>
 					<h1
@@ -322,7 +309,7 @@
 
 			<!-- --- SECTION 2: NARRATIVE OVERLAY --- -->
 			<div
-				class="w-full flex flex-col items-center justify-center text-center transition-all duration-75 relative z-20 max-w-3xl"
+				class="story-narrative w-full flex flex-col items-center justify-center text-center transition-all duration-75 relative z-20 max-w-3xl"
 				style="opacity: {narrativeOpacity}; transform: translateY({narrativeTranslateY}px); pointer-events: {narrativeOpacity >
 				0.1
 					? 'auto'
@@ -568,11 +555,12 @@
 		</div>
 	</section>
 
-	<!-- Fixed Scrolling Indicator (Down Arrow) -->
+	<!-- Only shown before scrolling on the tall-screen storytelling layout. -->
+	{#if indicatorOpacity > 0}
 	<button
 		onclick={() =>
 			window.scrollBy({ top: innerHeight, behavior: "smooth" })}
-		class="fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
+		class="scroll-indicator fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
 		style="opacity: {indicatorOpacity}; pointer-events: {indicatorOpacity >
 		0.05
 			? 'auto'
@@ -586,6 +574,7 @@
 			>keyboard_double_arrow_down</span
 		>
 	</button>
+	{/if}
 
 	<!-- Footer -->
 	<footer
@@ -601,6 +590,14 @@
 </main>
 
 <style>
+	#dashboard { scroll-margin-top: calc(84px + env(safe-area-inset-top)); }
+	/* Short windows and phones need natural scrolling, including browser zoom. */
+	@media (max-height: 900px), (max-width: 640px), (prefers-reduced-motion: reduce) {
+		.scroll-indicator { display: none; }
+		.story-track { height: auto; }
+		.story-stage { position: relative; height: auto; overflow: visible; padding-top: 96px; padding-bottom: 120px; gap: 64px; }
+		.story-landing, .landing-copy, .story-narrative { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
+	}
 	.active\:scale-98:active {
 		transform: scale(0.98);
 	}

@@ -24,7 +24,7 @@
 					<span aria-hidden="true" class="material-symbols-rounded text-sm">waving_hand</span>
 					ABOUT THE BUILDER
 				</div>
-				<h1 class="font-outfit text-[clamp(2.8rem,8vw,6.4rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-on-background text-balance">
+				<h1 class="about-title font-outfit font-extrabold text-on-background">
 					만들고, 운영하고,<br /><span class="text-primary-text">계속 개선합니다.</span>
 				</h1>
 				<p class="mt-6 max-w-2xl text-base leading-relaxed text-on-surface-variant sm:text-lg">
@@ -78,6 +78,7 @@
 </main>
 
 <style>
+	.about-title { font-size: clamp(2rem, 4.2vw, 3.5rem); line-height: 1.15; letter-spacing: -.035em; word-break: keep-all; text-wrap: balance; }
 	.ambient { position: absolute; pointer-events: none; border-radius: 999px; filter: blur(90px); opacity: .55; }
 	.ambient-one { width: min(55vw, 700px); aspect-ratio: 1; top: -18%; right: -12%; background: rgba(85, 26, 139, .22); }
 	.ambient-two { width: min(42vw, 520px); aspect-ratio: 1; bottom: 0; left: -12%; background: rgba(150, 123, 182, .12); }

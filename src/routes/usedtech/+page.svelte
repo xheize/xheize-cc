@@ -366,10 +366,10 @@
 			</aside>
 
 			<!-- Right Column: Technology Card Board (8 cols) -->
-			<section class="lg:col-span-8 flex flex-col gap-6">
+			<section class="lg:col-span-8 min-w-0 flex flex-col gap-6">
 				<!-- Custom Segmented Buttons for Filtering (Tabs) -->
 				<div
-					class="flex items-center gap-2 bg-surface-container p-1.5 rounded-m3-full border border-outline-variant/30 backdrop-blur-md overflow-x-auto [scrollbar-width:none]"
+					class="tech-filters flex items-center gap-2 bg-surface-container p-1.5 rounded-m3-full border border-outline-variant/30 backdrop-blur-md overflow-x-auto [scrollbar-width:none]"
 				>
 					<button
 						onclick={() => (activeFilter = "all")}
@@ -570,3 +570,8 @@
 		</footer>
 	</div>
 </main>
+
+<style>
+	.tech-filters > button { flex: 0 0 auto; min-width: max-content; }
+	.tech-filters > button > span { flex-shrink: 0; }
+</style>
