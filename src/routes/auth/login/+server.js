@@ -8,11 +8,13 @@ export async function GET({ cookies, url }) {
 		const metadata = await getOIDCMetadata();
 		const { clientId } = getAuthConfig();
 		const state = randomToken();
+		const nonce = randomToken();
 		const redirectUri = `${url.origin}/auth/callback`;
 		const returnTo = safeReturnTo(url.searchParams.get("returnTo"));
 
 		await setAuthFlow(cookies, {
 			state,
+			nonce,
 			returnTo,
 			redirectUri,
 			expiresAt: Date.now() + 10 * 60 * 1000,
@@ -24,6 +26,7 @@ export async function GET({ cookies, url }) {
 		authorization.searchParams.set("response_type", "code");
 		authorization.searchParams.set("scope", "openid profile email");
 		authorization.searchParams.set("state", state);
+		authorization.searchParams.set("nonce", nonce);
 	} catch (cause) {
 		console.error("OIDC login initialization failed", cause);
 		error(503, "SSO 로그인 서버에 연결할 수 없습니다.");

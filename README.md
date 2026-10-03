@@ -104,5 +104,11 @@ src/
 
 - Blog articles live in `src/lib/data/posts.js`. Each unique slug is a permanent `/blog/[slug]` URL. Markdown is rendered and sanitized on the server.
 - The home article count uses the shared article data. System metrics are explicitly labeled as demo data, not live monitoring.
-- Contact is a UI demo only; it does not send or store messages. External delivery is intentionally not connected.
+- Contact shows a preparation popup only; it has no input form and does not send or store messages. External delivery is intentionally not connected.
 - Use Node.js 24 (also used by Docker and CI). Run `npm test`, `npm run check`, `npm run build`, and `npm run test:smoke` before shipping changes.
+
+The SvelteKit cookie dependency is overridden to 0.7.2 to address GHSA-pxg6-pf52-xh8x without changing the framework major version. Revisit this override once SvelteKit requests a patched cookie version upstream.
+
+Protected route prefixes are checked after SvelteKit-compatible URL decoding. If a protected route is configured but SSO settings are incomplete, it returns 503. Authentication endpoints remain reachable even when `/` is protected.
+
+Login requires the first-party SSO server's RS256 ID token and discovery `jwks_uri`. The callback verifies the signature, issuer, audience, expiry, issued-at time, authorized party when applicable, request nonce, and matching UserInfo subject before creating a session. See [OIDC ID Token Validation](https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation). Smoke tests use generated signing keys and also reject invalid tokens; deployed SSO verification is separate.

@@ -43,8 +43,14 @@
 		"@smui/snackbar": "^8.0.3",
 		"@smui/textfield": "^8.0.3",
 		"@smui/top-app-bar": "^8.0.3",
+		"jose": "^6.2.12",
 		"marked": "^18.0.13",
 		"sanitize-html": "^2.17.7",
 		"smui-theme": "^8.0.3"
+	},
+	"overrides": {
+		"@sveltejs/kit": {
+			"cookie": "0.7.2"
+		}
 	}
 }
