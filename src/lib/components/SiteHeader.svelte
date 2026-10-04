@@ -11,11 +11,11 @@
 	let returnTo = $derived(`${page.url.pathname}${page.url.search}`);
 
 	const navItems = [
-		{ id: "home", label: "Home", href: "/", icon: "home" },
-		{ id: "blog", label: "Blog", href: "/blog", icon: "article" },
-		{ id: "tech", label: "Tech", href: "/usedtech", icon: "settings_suggest" },
-        { id: "about", label: "About", href: "/about", icon: "person" },
-        { id: "contact", label: "Contact", href: "/contact", icon: "mail" },
+		{ id: "home", label: "홈", href: "/", icon: "home" },
+		{ id: "blog", label: "기록", href: "/blog", icon: "article" },
+		{ id: "tech", label: "기술", href: "/usedtech", icon: "settings_suggest" },
+        { id: "about", label: "소개", href: "/about", icon: "person" },
+        { id: "contact", label: "연락", href: "/contact", icon: "mail" },
 	];
 </script>
 
@@ -62,7 +62,7 @@
 		{:else if authConfigured}
 			<a class="account-pill sign-in" aria-label="로그인" href={`/auth/login?returnTo=${encodeURIComponent(returnTo)}`}>
 				<span aria-hidden="true" class="material-symbols-rounded">login</span>
-				<span class="account-name">Sign in</span>
+				<span class="account-name">로그인</span>
 			</a>
 		{:else if active !== 'home'}
 			<div class="status-pill" aria-label="개인 샌드박스">Sandbox</div>
@@ -106,7 +106,7 @@
 		position: fixed;
 		inset: 0 0 auto;
 		z-index: 80;
-		padding: calc(12px + env(safe-area-inset-top)) clamp(16px, 3vw, 48px) 12px;
+		padding: calc(12px + env(safe-area-inset-top)) 0 12px;
 		transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 		border-bottom: 1px solid transparent;
 	}
@@ -120,6 +120,7 @@
 
 	.header-inner {
 		width: min(100%, 1440px);
+		padding-inline: clamp(16px, 3vw, 48px);
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
@@ -252,7 +253,7 @@
 	}
 
 	@media (max-width: 640px) {
-		.site-header { padding: calc(10px + env(safe-area-inset-top)) 16px 10px; }
+		.site-header { padding: calc(10px + env(safe-area-inset-top)) 0 10px; }
 		.site-header:not(.scrolled) { background: linear-gradient(to bottom, rgba(15, 13, 19, 0.8), transparent); }
 		.header-inner { justify-content: flex-start; }
 		.desktop-nav { display: none; }
@@ -310,6 +311,8 @@
 		.account-pill { width: 38px; justify-content: center; padding: 4px; }
 		.account-name { display: none; }
 	}
+
+	@media (min-width: 1920px) { .header-inner { width: min(86vw, 1600px); } }
 
 	@media (prefers-reduced-motion: reduce) {
 		.site-header, .desktop-nav a, .icon-wrap { transition: none; }

@@ -334,7 +334,7 @@
 
 				<!-- Spec Button -->
 				<a href="/usedtech"
-					class="flex items-center gap-2 bg-primary text-on-primary hover:bg-opacity-90 active:scale-98 transition-all px-8 py-3 rounded-m3-full font-outfit font-semibold shadow-m3-elevation-2"
+					class="site-button"
 				>
 					<span aria-hidden="true" class="material-symbols-rounded"
 						>settings_suggest</span
@@ -382,7 +382,7 @@
 				<!-- Card 2: Tech Blog -->
 				<div
 					id="card-blog"
-					class="m3-card relative flex flex-col justify-between p-6 bg-surface-container rounded-m3-xl border border-outline-variant/30 transition-all duration-300 hover:shadow-m3-elevation-3 group"
+					class="site-card relative flex flex-col justify-between group"
 				>
 					<div>
 						<!-- Card Header Info -->
@@ -419,7 +419,7 @@
 					<div class="mt-4">
 						<a
 							href="/blog"
-							class="w-full flex items-center justify-center gap-2 border-2 border-outline-variant text-secondary py-2.5 px-5 rounded-m3-full font-outfit font-semibold hover:bg-secondary/10 hover:border-secondary/30 active:scale-98 transition-all text-sm text-center decoration-none"
+							class="site-button site-button-secondary w-full"
 						>
 							<span>블로그 읽기</span>
 							<span aria-hidden="true" class="material-symbols-rounded text-base"
@@ -432,7 +432,7 @@
 				<!-- Card 3: System Status -->
 				<div
 					id="card-status"
-					class="m3-card relative flex flex-col justify-between p-6 bg-surface-container-high rounded-m3-xl border border-primary/20 shadow-m3-elevation-1 transition-all duration-300 hover:shadow-m3-elevation-3 group"
+					class="site-card relative flex flex-col justify-between group"
 				>
 					<div>
 						<!-- Card Header Info -->
@@ -576,17 +576,6 @@
 	</button>
 	{/if}
 
-	<!-- Footer -->
-	<footer
-		class="w-full bg-surface-container-lowest border-t border-outline-variant/20 py-8 px-6 text-center text-xs font-outfit text-on-surface-variant tracking-wider"
-	>
-		<p>
-			© {new Date().getFullYear()} Xheize Sandbox. All rights reserved.
-		</p>
-		<p class="mt-1 opacity-70">
-			Powered by Svelte 5 (Runes) & Tailwind CSS Dark Theme
-		</p>
-	</footer>
 </main>
 
 <style>
@@ -595,10 +584,7 @@
 	@media (max-height: 900px), (max-width: 640px), (prefers-reduced-motion: reduce) {
 		.scroll-indicator { display: none; }
 		.story-track { height: auto; }
-		.story-stage { position: relative; height: auto; overflow: visible; padding-top: 96px; padding-bottom: 120px; gap: 64px; }
+		.story-stage { position: relative; height: auto; overflow: visible; overflow-x: clip; padding-top: 96px; padding-bottom: 120px; gap: 64px; }
 		.story-landing, .landing-copy, .story-narrative { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
-	}
-	.active\:scale-98:active {
-		transform: scale(0.98);
 	}
 </style>

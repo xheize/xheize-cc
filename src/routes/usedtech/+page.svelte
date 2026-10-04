@@ -1,6 +1,7 @@
 <script>
 	import { fade, slide } from "svelte/transition";
 	import SiteHeader from "$lib/components/SiteHeader.svelte";
+	import PageHeading from "$lib/components/PageHeading.svelte";
 
 	// Svelte 5 Runes for state management
 	let activeFilter = $state("all");
@@ -208,32 +209,9 @@
 >
 	<SiteHeader active="tech" />
 
-	<!-- Glowing Ambient Background Blobs -->
-	<div
-		class="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full bg-primary-text/5 blur-[90px] pointer-events-none -top-12 -left-12 -z-10 animate-pulse"
-		style="animation-duration: 8s"
-	></div>
-	<div
-		class="absolute w-[250px] h-[250px] md:w-[450px] md:h-[450px] rounded-full bg-secondary-container/10 blur-[80px] pointer-events-none bottom-1/4 -right-12 -z-10 animate-pulse"
-		style="animation-duration: 6s"
-	></div>
-
-	<div class="responsive-shell pt-24 sm:pt-28 pb-8 flex flex-col gap-6 sm:gap-8">
+	<div class="responsive-shell page-layout">
 		<!-- Hero Section -->
-		<section class="text-center py-5 md:py-10 max-w-3xl mx-auto">
-			<h1
-				class="font-outfit font-extrabold text-[clamp(2.3rem,6vw,4rem)] leading-[1.05] tracking-tight text-on-background mb-4 bg-clip-text text-balance"
-			>
-				Used Technology Stack
-			</h1>
-			<p
-				class="text-on-surface-variant text-sm md:text-base leading-relaxed"
-			>
-				Xheize 인프라 및 핵심 웹 서비스 포털을 구성하는 핵심 기술 스택
-				목록입니다. 각 아이템을 클릭하면 채택 상세 배경을 확인할 수
-				있습니다.
-			</p>
-		</section>
+		<PageHeading title="사용하는 기술" description="직접 사용하는 기술과 채택한 이유를 정리했습니다. 카드를 누르면 자세한 내용을 볼 수 있습니다." />
 
 		<!-- Main Grid Layout -->
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
@@ -241,19 +219,15 @@
 			<aside class="lg:col-span-4 flex flex-col gap-6">
 				<!-- Profile Card -->
 				<div
-					class="bg-surface-container border border-outline-variant/30 rounded-m3-xl p-6 shadow-m3-elevation-2 backdrop-blur-md relative overflow-hidden group"
+					class="site-card relative overflow-hidden group"
 				>
-					<!-- Ambient light accent -->
-					<div
-						class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-primary/20 blur-2xl group-hover:bg-primary/30 transition-all duration-700"
-					></div>
 
 					<div
 						class="flex flex-col items-center text-center relative z-10"
 					>
 						<!-- Profile Avatar with animated border glow -->
 						<div
-							class="relative w-28 h-28 mb-4 p-1.5 rounded-full bg-gradient-to-tr from-primary to-secondary/40 shadow-lg shadow-black/40 group-hover:scale-102 transition-transform duration-500"
+							class="relative w-24 h-24 mb-4 rounded-full border border-outline-variant/30"
 						>
 							<img
 								src={profile.avatar}
@@ -298,7 +272,7 @@
 								href={profile.github}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-3 rounded-m3-full font-outfit font-bold hover:bg-opacity-95 active:scale-98 shadow-md hover:shadow-primary/20 hover:shadow-lg transition-all text-sm decoration-none"
+								class="site-button site-button-secondary w-full"
 							>
 								<!-- GitHub logo mock SVG -->
 								<svg
@@ -312,7 +286,7 @@
 										d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"
 									/>
 								</svg>
-								<span>GitHub Profile</span>
+								<span>GitHub 프로필</span>
 							</a>
 						</div>
 					</div>
@@ -320,7 +294,7 @@
 
 				<!-- Visual Spec Summary Box -->
 				<div
-					class="bg-surface-container-high/40 border border-outline-variant/20 rounded-m3-xl p-5 shadow-sm backdrop-blur-sm"
+					class="site-card"
 				>
 					<h3
 						class="font-outfit font-bold text-sm tracking-wider text-primary-text mb-3 uppercase flex items-center gap-1.5"
@@ -369,7 +343,7 @@
 			<section class="lg:col-span-8 min-w-0 flex flex-col gap-6">
 				<!-- Custom Segmented Buttons for Filtering (Tabs) -->
 				<div
-					class="tech-filters flex items-center gap-2 bg-surface-container p-1.5 rounded-m3-full border border-outline-variant/30 backdrop-blur-md overflow-x-auto [scrollbar-width:none]"
+					class="tech-filters site-filters"
 				>
 					<button
 						onclick={() => (activeFilter = "all")}
@@ -382,7 +356,7 @@
 						<span aria-hidden="true" class="material-symbols-rounded text-sm"
 							>grid_view</span
 						>
-						<span>ALL</span>
+						<span>전체</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "language")}
@@ -395,7 +369,7 @@
 						<span aria-hidden="true" class="material-symbols-rounded text-sm"
 							>code</span
 						>
-						<span>LANGUAGES</span>
+						<span>언어</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "framework")}
@@ -407,7 +381,7 @@
 					>
 						<span aria-hidden="true" class="material-symbols-rounded text-sm">web</span
 						>
-						<span>FRAMEWORKS</span>
+						<span>프레임워크</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "infra")}
@@ -419,7 +393,7 @@
 					>
 						<span aria-hidden="true" class="material-symbols-rounded text-sm">dns</span
 						>
-						<span>INFRASTRUCTURE</span>
+						<span>인프라</span>
 					</button>
 					<button
 						onclick={() => (activeFilter = "software")}
@@ -430,7 +404,7 @@
 							: 'text-on-surface-variant hover:bg-primary/10'}"
 					>
 						<span aria-hidden="true" class="material-symbols-rounded text-sm">construction</span>
-						<span>SOFTWARE</span>
+						<span>소프트웨어</span>
 					</button>
 				</div>
 
@@ -440,9 +414,9 @@
 						<button
 							onclick={() => toggleDetails(tech.id)}
                             aria-expanded={selectedTechId === tech.id}
-							class="w-full text-left bg-surface-container hover:bg-surface-container-high border rounded-m3-xl p-5 shadow-sm transition-all duration-300 group flex flex-col justify-between {selectedTechId ===
+							class="site-card tech-card w-full text-left transition-colors duration-200 group flex flex-col justify-between {selectedTechId ===
 							tech.id
-								? 'border-primary/40 shadow-m3-elevation-2 scale-[1.01]'
+								? 'border-primary/40'
 								: 'border-outline-variant/30'}"
 							style="min-height: 200px;"
 							transition:fade={{ duration: 150 }}
@@ -520,8 +494,8 @@
 								>
 									<span
 										>{selectedTechId === tech.id
-											? "Close details"
-											: "Click for detail context"}</span
+											? "접기"
+											: "자세히 보기"}</span
 									>
 									<span aria-hidden="true" class="material-symbols-rounded text-xs transition-transform duration-300 {selectedTechId ===
 										tech.id
@@ -546,7 +520,7 @@
 						<p
 							class="font-outfit font-bold text-on-surface text-lg"
 						>
-							No technologies found
+							표시할 기술이 없습니다
 						</p>
 						<p class="text-xs text-on-surface-variant mt-1">
 							이 카테고리에 할당된 기술이 없습니다.
@@ -556,22 +530,13 @@
 			</section>
 		</div>
 
-		<!-- Bottom Decorative Stack Meta Banner -->
-		<footer
-			class="mt-8 border-t border-outline-variant/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-outfit tracking-wider text-on-surface-variant/80"
-		>
-			<p>
-				© {new Date().getFullYear()} Xheize Sandbox. Designed with M3 Dark
-				Theme.
-			</p>
-			<p class="opacity-75">
-				Svelte 5 (Runes) • Tailwind CSS • Glassmorphism UI
-			</p>
-		</footer>
 	</div>
 </main>
 
 <style>
+	.tech-card:hover { background: var(--md-sys-color-surface-container-high); }
+	.tech-card[aria-expanded="true"] { border-color: var(--md-sys-color-primary-text); }
+
 	.tech-filters > button { flex: 0 0 auto; min-width: max-content; }
 	.tech-filters > button > span { flex-shrink: 0; }
 </style>

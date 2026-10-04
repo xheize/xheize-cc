@@ -1,90 +1,54 @@
 <script>
-	import SiteHeader from "$lib/components/SiteHeader.svelte";
-
-	/** @type {{ data: import('./$types').PageData }} */
-	let { data } = $props();
-
+ import SiteHeader from '$lib/components/SiteHeader.svelte';
+ import PageHeading from '$lib/components/PageHeading.svelte';
+ /** @type {{ data: import('./$types').PageData }} */
+ let { data } = $props();
 </script>
 
 <svelte:head>
-	<title>About - Xheize Sandbox</title>
-	<meta name="description" content="Xheize의 개발 관심사와 SvelteKit 기반 샌드박스를 소개합니다." />
+ <title>소개 - Xheize Sandbox</title>
+ <meta name="description" content="Xheize의 개발 관심사와 개인 샌드박스를 소개합니다." />
 </svelte:head>
 
 <SiteHeader active="about" />
-
-<main class="relative min-h-screen overflow-hidden bg-background text-on-background font-roboto">
-	<div class="ambient ambient-one"></div>
-	<div class="ambient ambient-two"></div>
-
-	<div class="responsive-shell relative z-10 pt-28 sm:pt-36 pb-16 sm:pb-24">
-		<section class="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] xl:gap-14">
-			<div class="max-w-3xl">
-				<div class="mb-5 inline-flex items-center gap-2 rounded-m3-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-wider text-primary-text">
-					<span aria-hidden="true" class="material-symbols-rounded text-sm">waving_hand</span>
-					ABOUT THE BUILDER
-				</div>
-				<h1 class="about-title font-outfit font-extrabold text-on-background">
-					만들고, 운영하고,<br /><span class="text-primary-text">계속 개선합니다.</span>
-				</h1>
-				<p class="mt-6 max-w-2xl text-base leading-relaxed text-on-surface-variant sm:text-lg">
-					{data.profile.experience}. 빠른 웹 경험과 안정적인 인프라 사이의 연결을 탐구하는 개인 샌드박스입니다.
-				</p>
-				<div class="mt-7 flex flex-wrap gap-2">
-					{#each data.profile.interests as interest}
-						<span class="rounded-m3-full border border-outline-variant/30 bg-surface-container px-4 py-2 text-xs font-medium text-on-surface">{interest}</span>
-					{/each}
-				</div>
-			</div>
-
-			<aside class="relative overflow-hidden rounded-m3-xl border border-outline-variant/30 bg-surface-container/90 p-5 shadow-m3-elevation-3 backdrop-blur-xl sm:p-7">
-				<div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/20 blur-3xl"></div>
-				<div class="relative flex items-center gap-4">
-					<div class="grid h-16 w-16 shrink-0 place-items-center rounded-[20px] border border-primary/20 bg-primary/10 text-primary-text sm:h-20 sm:w-20">
-						<span aria-hidden="true" class="material-symbols-rounded text-4xl sm:text-5xl">person</span>
-					</div>
-					<div class="min-w-0">
-						<p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary-text">Profile</p>
-						<h2 class="truncate font-outfit text-2xl font-extrabold sm:text-3xl">{data.profile.name}</h2>
-						<p class="mt-1 text-sm text-on-surface-variant">{data.profile.title}</p>
-					</div>
-				</div>
-				<div class="relative mt-7 grid grid-cols-3 gap-2 sm:gap-3">
-					<div class="stat"><strong>SSR</strong><span>rendering</span></div>
-					<div class="stat"><strong>Svelte 5</strong><span>frontend</span></div>
-					<div class="stat"><strong>Node</strong><span>runtime</span></div>
-				</div>
-			</aside>
-		</section>
-
-		<section class="mt-10 grid gap-5 lg:mt-16 lg:grid-cols-[0.8fr_1.2fr]">
-			<div class="rounded-m3-xl border border-outline-variant/25 bg-surface-container-low p-5 sm:p-7">
-				<span aria-hidden="true" class="material-symbols-rounded text-3xl text-secondary">architecture</span>
-				<h2 class="mt-5 font-outfit text-2xl font-bold">Working principles</h2>
-				<p class="mt-3 text-sm leading-relaxed text-on-surface-variant sm:text-base">작게 실험하고, 실제 환경에서 관찰한 뒤, 반복 가능한 구조로 정리합니다. 화면의 디테일과 운영 안정성을 같은 제품 경험으로 봅니다.</p>
-			</div>
-
-			<div class="rounded-m3-xl border border-outline-variant/25 bg-surface-container p-5 sm:p-7">
- <h2 class="font-outfit text-2xl font-bold">프로젝트와 기록</h2>
- <p class="mt-3 text-sm leading-relaxed text-on-surface-variant">직접 구축한 인프라와 웹 개발 경험을 블로그에 기록합니다. 사용 중인 기술과 채택 배경도 함께 소개합니다.</p>
- <div class="mt-6 flex flex-wrap gap-4">
-  <a class="text-primary-text underline" href="/blog">개발 기록 읽기</a>
-  <a class="text-primary-text underline" href="/usedtech">기술 스택 보기</a>
-  <a class="text-primary-text underline" href="https://github.com/xheize" target="_blank" rel="noopener noreferrer">GitHub 프로젝트</a>
+<main class="responsive-shell page-layout">
+ <PageHeading title="만들고, 운영하고, 계속 개선합니다." description={data.profile.experience + '. 직접 만든 서비스와 인프라를 실험하고 기록하는 개인 샌드박스입니다.'} />
+ <div class="about-grid">
+  <section class="site-card">
+   <h2>작업 원칙</h2>
+   <p>작게 실험하고, 실제 환경에서 관찰한 뒤, 반복 가능한 구조로 정리합니다. 화면의 디테일과 운영 안정성을 같은 제품 경험으로 봅니다.</p>
+   <div class="interests">
+    {#each data.profile.interests as interest}<span>{interest}</span>{/each}
+   </div>
+  </section>
+  <aside class="site-card">
+   <div class="profile-heading">
+    <span aria-hidden="true" class="profile-icon material-symbols-rounded">person</span>
+    <div><h2>{data.profile.name}</h2><p>{data.profile.title}</p></div>
+   </div>
+   <a class="site-text-link" href="https://github.com/xheize" target="_blank" rel="noopener noreferrer">GitHub 프로필 <span aria-hidden="true">↗</span></a>
+  </aside>
+  <section class="site-card records">
+   <h2>프로젝트와 기록</h2>
+   <p>직접 구축한 인프라와 웹 개발 경험을 블로그에 기록합니다. 사용 중인 기술과 채택 배경도 함께 소개합니다.</p>
+   <div class="actions">
+    <a class="site-button" href="/blog">개발 기록 읽기</a>
+    <a class="site-button site-button-secondary" href="/usedtech">기술 스택 보기</a>
+   </div>
+  </section>
  </div>
-</div>
-		</section>
-	</div>
 </main>
 
 <style>
-	.about-title { font-size: clamp(2rem, 4.2vw, 3.5rem); line-height: 1.15; letter-spacing: -.035em; word-break: keep-all; text-wrap: balance; }
-	.ambient { position: absolute; pointer-events: none; border-radius: 999px; filter: blur(90px); opacity: .55; }
-	.ambient-one { width: min(55vw, 700px); aspect-ratio: 1; top: -18%; right: -12%; background: rgba(85, 26, 139, .22); }
-	.ambient-two { width: min(42vw, 520px); aspect-ratio: 1; bottom: 0; left: -12%; background: rgba(150, 123, 182, .12); }
-	.stat { min-width: 0; border: 1px solid rgba(147,143,153,.16); border-radius: 16px; background: rgba(15,13,19,.5); padding: 14px 10px; text-align: center; }
-	.stat strong, .stat span { display: block; overflow: hidden; text-overflow: ellipsis; }
-	.stat strong { color: var(--md-sys-color-on-surface); font: 700 clamp(.75rem, 2.5vw, .95rem)/1.15 "Outfit", sans-serif; }
-	.stat span { margin-top: 5px; color: var(--md-sys-color-on-surface-variant); font-size: .65rem; }
-	@media (max-height: 760px) and (min-width: 900px) { .responsive-shell { padding-top: 104px; padding-bottom: 48px; } }
+ .about-grid { display: grid; gap: 24px; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); }
+ h2 { margin: 0; font-size: 1.375rem; font-weight: 700; line-height: 1.4; }
+ p { margin: 12px 0 0; color: var(--md-sys-color-on-surface-variant); line-height: 1.8; }
+ .profile-heading { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+ .profile-heading > div { min-width: 0; overflow-wrap: anywhere; }
+ .profile-icon { display: grid; place-items: center; flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-primary-text); }
+ .interests { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+ .interests span { border: 1px solid var(--site-border); border-radius: 8px; padding: 6px 10px; font-size: .8rem; color: var(--md-sys-color-on-surface-variant); }
+ .records { grid-column: 1 / -1; }
+ .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+ @media (max-width: 900px) { .about-grid { grid-template-columns: minmax(0,1fr); } }
 </style>
