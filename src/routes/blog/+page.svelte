@@ -46,12 +46,12 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 sm:gap-6 items-stretch">
 				{#each filteredPosts as post (post.id)}
 					<div
-						class="site-card flex flex-col justify-between group"
+						class="site-card break-words flex flex-col justify-between group"
 						transition:fade={{ duration: 150 }}
 					>
 						<div>
 							<!-- Meta Row -->
-							<div class="flex items-center justify-between mb-4 text-[10px] font-mono font-semibold tracking-widest text-on-surface-variant/80">
+							<div class="flex flex-wrap gap-2 items-center justify-between mb-4 text-xs font-mono font-semibold tracking-widest text-on-surface-variant/80">
 								<span class="text-primary-text bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-m3-xs uppercase">
 									{post.category}
 								</span>
@@ -71,7 +71,7 @@
 
 						<!-- Card Footer Action -->
 						<div class="border-t border-outline-variant/10 pt-4 flex items-center justify-between">
-							<span class="text-[11px] font-mono text-on-surface-variant/70">{post.readTime}</span>
+							<span class="text-xs font-mono text-on-surface-variant/70">{post.readTime}</span>
 							<a href={`/blog/${post.slug}`}
 								class="site-text-link"
 							>

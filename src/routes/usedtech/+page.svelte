@@ -424,15 +424,15 @@
 							<div class="w-full">
 								<!-- Card Upper Section (Category + Level badge) -->
 								<div
-									class="flex items-center justify-between mb-4 w-full"
+									class="flex flex-wrap gap-2 items-center justify-between mb-4 w-full"
 								>
 									<span
-										class="text-[10px] font-mono tracking-widest text-primary-text bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-m3-xs font-bold uppercase"
+										class="text-xs font-mono tracking-widest text-primary-text bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-m3-xs font-bold uppercase"
 									>
 										{tech.category}
 									</span>
 									<span
-										class="text-[10px] font-outfit font-semibold tracking-wider text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded-m3-xs uppercase"
+										class="text-xs font-outfit font-semibold tracking-wider text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded-m3-xs uppercase"
 									>
 										{tech.level}
 									</span>
@@ -490,7 +490,7 @@
 								{/if}
 
 								<div
-									class="flex items-center justify-between text-[10px] font-outfit font-bold tracking-wider uppercase text-primary-text/80 group-hover:text-primary-text mt-1"
+									class="flex items-center justify-between text-xs font-outfit font-bold tracking-wider uppercase text-primary-text/80 group-hover:text-primary-text mt-1"
 								>
 									<span
 										>{selectedTechId === tech.id
@@ -537,6 +537,7 @@
 	.tech-card:hover { background: var(--md-sys-color-surface-container-high); }
 	.tech-card[aria-expanded="true"] { border-color: var(--md-sys-color-primary-text); }
 
-	.tech-filters > button { flex: 0 0 auto; min-width: max-content; }
+	.tech-filters > button { flex: 0 1 auto; min-width: 0; }
+	.tech-card { overflow-wrap: anywhere; }
 	.tech-filters > button > span { flex-shrink: 0; }
 </style>

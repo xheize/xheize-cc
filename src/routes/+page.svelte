@@ -112,11 +112,11 @@
 			>
 				<!-- Dynamic Sandcastle SVG (Central metaphor) - Fixed opacity/scale -->
 				<div
-					class="relative mb-6 flex flex-col items-center justify-center pointer-events-none"
+					class="relative max-w-full mb-6 flex flex-col items-center justify-center pointer-events-none"
 					style="opacity: 1;"
 				>
 					<svg
-						class="w-48 h-48 md:w-64 md:h-64 text-primary filter drop-shadow-[0_0_15px_rgba(208,188,255,0.2)]"
+						class="max-w-full w-48 h-48 md:w-64 md:h-64 text-primary filter drop-shadow-[0_0_15px_rgba(208,188,255,0.2)]"
 						viewBox="0 0 100 100"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -395,7 +395,7 @@
 								>
 							</div>
 							<span
-								class="font-mono text-xs text-secondary/80 font-bold bg-secondary/5 px-2.5 py-1 rounded-m3-sm"
+								class="font-mono text-xs text-primary-text font-bold bg-secondary/5 px-2.5 py-1 rounded-m3-sm"
 								>POSTS ({data.postCount})</span
 							>
 						</div>
@@ -532,7 +532,7 @@
 					>
 						<div class="text-left">
 							<span
-								class="text-[10px] font-outfit uppercase tracking-widest text-on-surface-variant block"
+								class="text-xs font-outfit uppercase tracking-widest text-on-surface-variant block"
 								>System Uptime</span
 							>
 							<span
@@ -567,7 +567,7 @@
 			: 'none'};"
 	>
 		<span
-			class="font-outfit text-[10px] uppercase tracking-widest opacity-80"
+			class="font-outfit text-xs uppercase tracking-widest opacity-80"
 			>Scroll Down</span
 		>
 		<span aria-hidden="true" class="material-symbols-rounded animate-bounce text-xl mt-1"
