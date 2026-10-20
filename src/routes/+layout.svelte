@@ -1,5 +1,6 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
+	import SiteFooter from '$lib/components/SiteFooter.svelte';
 	import '../app.css';
 
 	let { children } = $props();
@@ -12,3 +13,4 @@
 </svelte:head>
 
 {@render children()}
+<SiteFooter />

@@ -12,9 +12,9 @@
 </svelte:head>
 
 <SiteHeader active="blog" />
-<main class="responsive-shell pt-28 sm:pt-36 pb-16">
-	<div class="mx-auto max-w-4xl rounded-m3-xl border border-outline-variant/30 bg-surface-container p-5 sm:p-8 md:p-10">
-		<a href="/blog" class="text-primary-text underline">← 글 목록</a>
+<main class="responsive-shell page-layout">
+	<div class="site-card mx-auto max-w-4xl">
+		<a href="/blog" class="site-text-link">← 글 목록</a>
 		<div class="mt-7 flex flex-wrap gap-3 text-xs text-on-surface-variant">
 			<span>{data.post.category}</span>
 			<time datetime={data.post.date}>{data.post.date}</time>

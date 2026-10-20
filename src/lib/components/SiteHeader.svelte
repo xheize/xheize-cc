@@ -11,17 +11,17 @@
 	let returnTo = $derived(`${page.url.pathname}${page.url.search}`);
 
 	const navItems = [
-		{ id: "home", label: "Home", href: "/", icon: "home" },
-		{ id: "blog", label: "Blog", href: "/blog", icon: "article" },
-		{ id: "tech", label: "Tech", href: "/usedtech", icon: "settings_suggest" },
-        { id: "about", label: "About", href: "/about", icon: "person" },
-        { id: "contact", label: "Contact", href: "/contact", icon: "mail" },
+		{ id: "home", label: "홈", href: "/", icon: "home" },
+		{ id: "blog", label: "기록", href: "/blog", icon: "article" },
+		{ id: "tech", label: "기술", href: "/usedtech", icon: "settings_suggest" },
+        { id: "about", label: "소개", href: "/about", icon: "person" },
+        { id: "contact", label: "연락", href: "/contact", icon: "mail" },
 	];
 </script>
 
 <svelte:window bind:scrollY={y} />
 
-<header class:scrolled={isScrolled} class="site-header">
+<header class:scrolled={isScrolled} class:home-header={active === 'home'} class="site-header">
 	<div class="header-inner">
 		<a href="/" class="brand" aria-label="Xheize 홈">
 			<span aria-hidden="true" class="brand-mark material-symbols-rounded">fort</span>
@@ -45,6 +45,10 @@
 			{/each}
 		</nav>
 
+		{#if active === 'home'}
+			<a class="intro-skip" href="#dashboard">서비스 바로 보기<span aria-hidden="true">↓</span></a>
+		{/if}
+
 		{#if user}
 			<a class="account-pill" href="/auth/logout?returnTo=/" aria-label={`${user.name ?? user.email ?? "사용자"} 로그아웃`}>
 				{#if user.picture}
@@ -58,9 +62,9 @@
 		{:else if authConfigured}
 			<a class="account-pill sign-in" aria-label="로그인" href={`/auth/login?returnTo=${encodeURIComponent(returnTo)}`}>
 				<span aria-hidden="true" class="material-symbols-rounded">login</span>
-				<span class="account-name">Sign in</span>
+				<span class="account-name">로그인</span>
 			</a>
-		{:else}
+		{:else if active !== 'home'}
 			<div class="status-pill" aria-label="개인 샌드박스">Sandbox</div>
 		{/if}
 	</div>
@@ -83,11 +87,27 @@
 </nav>
 
 <style>
+	.intro-skip { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 12px; min-width: 0; border: 1px solid rgba(208,188,255,.25); border-radius: 999px; color: var(--md-sys-color-primary-text); background: var(--md-sys-color-surface-container); text-decoration: none; white-space: normal; overflow-wrap: anywhere; font-size: .75rem; font-weight: 600; }
+	.intro-skip:hover { background: var(--md-sys-color-primary-container); }
+	@media (min-width: 641px) and (max-width: 1100px) {
+		.home-header .desktop-nav a { padding-inline: 12px; }
+		.home-header .desktop-nav a span:last-child { display: none; }
+	}
+	@media (max-width: 640px) {
+		.home-header .header-inner { gap: 10px; }
+		.home-header .brand-copy { display: none; }
+		.intro-skip { margin-left: auto; padding-inline: 10px; }
+		.home-header .account-pill { margin-left: 0; width: 44px; flex-shrink: 0; padding: 4px; justify-content: center; }
+		.home-header .account-name { display: none; }
+	}
+	@media (max-width: 380px) {
+		.home-header .brand-copy { display: none; }
+	}
 	.site-header {
 		position: fixed;
 		inset: 0 0 auto;
 		z-index: 80;
-		padding: calc(12px + env(safe-area-inset-top)) clamp(16px, 3vw, 48px) 12px;
+		padding: calc(12px + env(safe-area-inset-top)) 0 12px;
 		transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 		border-bottom: 1px solid transparent;
 	}
@@ -101,6 +121,7 @@
 
 	.header-inner {
 		width: min(100%, 1440px);
+		padding-inline: clamp(16px, 3vw, 48px);
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
@@ -144,7 +165,7 @@
 	.brand-copy small {
 		margin-top: 5px;
 		color: var(--md-sys-color-on-surface-variant);
-		font: 500 0.62rem/1 "Roboto", sans-serif;
+		font: 500 var(--site-text-caption)/1 "Roboto", sans-serif;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}
@@ -163,7 +184,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 7px;
-		min-height: 40px;
+		min-height: var(--site-control-height);
 		padding: 0 16px;
 		border-radius: 999px;
 		color: var(--md-sys-color-on-surface-variant);
@@ -178,7 +199,7 @@
 	}
 
 	.desktop-nav a:active { transform: scale(0.97); }
-	.desktop-nav a.active { color: var(--md-sys-color-on-primary); background: var(--md-sys-color-primary); }
+	.desktop-nav a.active { text-decoration: underline; text-underline-offset: 5px; color: var(--md-sys-color-on-primary); background: var(--md-sys-color-primary); }
 	.desktop-nav .material-symbols-rounded { font-size: 18px; }
 
 	.status-pill {
@@ -191,7 +212,7 @@
 		border-radius: 999px;
 		background: rgba(16, 185, 129, 0.07);
 		color: #a7f3d0;
-		font: 600 0.68rem/1 "Roboto", sans-serif;
+		font: 600 var(--site-text-caption)/1 "Roboto", sans-serif;
 		letter-spacing: 0.04em;
 	}
 
@@ -201,14 +222,14 @@
 		align-items: center;
 		gap: 8px;
 		max-width: 190px;
-		min-height: 40px;
+		min-height: var(--site-control-height);
 		padding: 5px 8px;
 		border: 1px solid rgba(208, 188, 255, 0.2);
 		border-radius: 999px;
 		background: rgba(208, 188, 255, 0.08);
 		color: var(--md-sys-color-primary-text);
 		text-decoration: none;
-		font: 600 0.72rem/1 "Roboto", sans-serif;
+		font: 600 var(--site-text-caption)/1 "Roboto", sans-serif;
 	}
 
 	.account-pill img {
@@ -233,13 +254,13 @@
 	}
 
 	@media (max-width: 640px) {
-		.site-header { padding: calc(10px + env(safe-area-inset-top)) 16px 10px; }
+		.site-header { padding: calc(10px + env(safe-area-inset-top)) 0 10px; }
 		.site-header:not(.scrolled) { background: linear-gradient(to bottom, rgba(15, 13, 19, 0.8), transparent); }
 		.header-inner { justify-content: flex-start; }
 		.desktop-nav { display: none; }
 		.brand-mark { width: 36px; height: 36px; }
 		.brand-copy small { display: none; }
-		.account-pill { max-width: 132px; min-height: 38px; }
+		.account-pill { max-width: 132px; min-height: var(--site-control-height); }
 		.logout-icon { display: none; }
 
 		.mobile-dock {
@@ -282,15 +303,17 @@
 		}
 
 		.mobile-dock a.active { color: var(--md-sys-color-primary-text); }
-		.mobile-dock a.active .icon-wrap { background: rgba(208, 188, 255, 0.16); }
+		.mobile-dock a.active .icon-wrap { border-bottom: 2px solid currentColor; background: rgba(208, 188, 255, 0.16); }
 		.mobile-dock .material-symbols-rounded { font-size: 20px; }
-		.mobile-dock small { overflow: hidden; max-width: 100%; text-overflow: ellipsis; font: 600 0.61rem/1 "Roboto", sans-serif; }
+		.mobile-dock small { max-width: 100%; overflow-wrap: anywhere; font: 600 var(--site-text-caption)/1 "Roboto", sans-serif; }
 	}
 
 	@media (max-width: 380px) {
-		.account-pill { width: 38px; justify-content: center; padding: 4px; }
+		.account-pill { width: 44px; justify-content: center; padding: 4px; }
 		.account-name { display: none; }
 	}
+
+	@media (min-width: 1920px) { .header-inner { width: min(86vw, 1600px); } }
 
 	@media (prefers-reduced-motion: reduce) {
 		.site-header, .desktop-nav a, .icon-wrap { transition: none; }

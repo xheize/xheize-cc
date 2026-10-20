@@ -5,6 +5,13 @@ variables:
 when:
   - event: [pull_request, push, tag]
 
+# Design references are documentation-only; CI does not need private submodule access.
+clone:
+  git:
+    image: woodpeckerci/plugin-git:2.10.1
+    settings:
+      recursive: false
+
 steps:
   - name: install-lint-check
     image: *nodejs_image
@@ -16,7 +23,6 @@ steps:
       - npm run test:smoke
     when:
       event: [push, pull_request]
-      branch: [dev, main]
 
   - name: build-and-push-nightly
     image: *buildkit_image

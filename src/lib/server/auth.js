@@ -11,7 +11,7 @@ const sessionMaxAge = 60 * 60 * 8;
 const flowMaxAge = 60 * 10;
 
 /** @typedef {{ sub: string, email?: string, name?: string, picture?: string, expiresAt: number }} SessionUser */
-/** @typedef {{ state: string, returnTo: string, redirectUri: string, expiresAt: number }} AuthFlow */
+/** @typedef {{ state: string, nonce: string, returnTo: string, redirectUri: string, expiresAt: number }} AuthFlow */
 
 /** @param {Uint8Array} bytes */
 function base64url(bytes) {
@@ -106,7 +106,7 @@ export async function setAuthFlow(cookies, flow) {
 /** @param {import('@sveltejs/kit').Cookies} cookies @returns {Promise<AuthFlow | null>} */
 export async function readAuthFlow(cookies) {
 	const flow = await unseal(cookies.get(FLOW_COOKIE), "oidc-flow");
-	if (!flow || typeof flow.state !== "string" || typeof flow.redirectUri !== "string" || flow.expiresAt < Date.now()) return null;
+	if (!flow || typeof flow.state !== "string" || typeof flow.nonce !== "string" || !flow.nonce || typeof flow.redirectUri !== "string" || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now()) return null;
 	return flow;
 }
 
@@ -135,9 +135,17 @@ export function clearSession(cookies) {
 
 /** @param {string} pathname */
 export function isProtectedPath(pathname) {
-	if (!isAuthConfigured()) return false;
 	const configured = env.AUTH_PROTECTED_ROUTES?.split(",").map((path) => path.trim()).filter(Boolean) ?? [];
-	return configured.some((path) => pathname === path || pathname.startsWith(`${path}/`));
+	// Match SvelteKit's pathname decoding, preserving encoded percent signs.
+	try {
+		pathname = pathname.split('%25').map(decodeURI).join('%25');
+	} catch {
+		return configured.length > 0;
+	}
+	return configured.some((prefix) => {
+		const path = prefix.replace(/\/+$/, '') || '/';
+		return path === '/' || pathname === path || pathname.startsWith(`${path}/`);
+	});
 }
 
 export function randomToken() {
@@ -152,7 +160,7 @@ export async function getOIDCMetadata() {
 	});
 	if (!response.ok) throw new Error(`OIDC discovery failed (${response.status})`);
 	const metadata = await response.json();
-	if (metadata.issuer !== issuer || !metadata.authorization_endpoint || !metadata.token_endpoint || !metadata.userinfo_endpoint) {
+	if (metadata.issuer !== issuer || !metadata.authorization_endpoint || !metadata.token_endpoint || !metadata.userinfo_endpoint || !metadata.jwks_uri) {
 		throw new Error("OIDC discovery response is incomplete or has an unexpected issuer");
 	}
 	return metadata;

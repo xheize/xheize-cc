@@ -38,21 +38,8 @@
 
 
 
-	// Dynamic tracking of total document scroll height on the client
-	let documentHeight = $state(3000);
-	$effect(() => {
-		// Svelte 5 reactive trigger on scroll/resize
-		y;
-		innerHeight;
-		if (typeof document !== "undefined") {
-			documentHeight = document.documentElement.scrollHeight;
-		}
-	});
-
-	// Derive indicator opacity: 1 normally, fades to 0 as user nears the bottom (within 150px)
-	let indicatorOpacity = $derived(
-		Math.max(0, Math.min(1, (documentHeight - (y + innerHeight)) / 150)),
-	);
+	// The introductory hint disappears as soon as the visitor starts scrolling.
+	let indicatorOpacity = $derived(Math.max(0, 1 - y / 120));
 
 	// --- Lifecycle effect for system status animation ---
 	$effect(() => {
@@ -106,9 +93,9 @@
 		Inside, we pin the viewport and overlay Section 1 (Landing) and Section 2 (Narrative)
 		to perform crossfade transitions based on scroll variables.
 	-->
-	<div class="relative w-full h-[200vh]">
+	<div class="story-track relative w-full h-[200vh]">
 		<div
-			class="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 pt-16"
+			class="story-stage sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 pt-16"
 		>
 			<!-- Background Glowing Core (M3 Ambient Design) -->
 			<div
@@ -118,18 +105,18 @@
 
 			<!-- --- SECTION 1: LANDING OVERLAY --- -->
 			<div
-					class="w-full max-w-5xl flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
+					class="story-landing w-full max-w-5xl flex flex-col items-center justify-center text-center transition-all duration-75 relative z-10"
 				style="pointer-events: {landingOpacity > 0.01
 					? 'auto'
 					: 'none'};"
 			>
 				<!-- Dynamic Sandcastle SVG (Central metaphor) - Fixed opacity/scale -->
 				<div
-					class="relative mb-6 flex flex-col items-center justify-center pointer-events-none"
+					class="relative max-w-full mb-6 flex flex-col items-center justify-center pointer-events-none"
 					style="opacity: 1;"
 				>
 					<svg
-						class="w-48 h-48 md:w-64 md:h-64 text-primary filter drop-shadow-[0_0_15px_rgba(208,188,255,0.2)]"
+						class="max-w-full w-48 h-48 md:w-64 md:h-64 text-primary filter drop-shadow-[0_0_15px_rgba(208,188,255,0.2)]"
 						viewBox="0 0 100 100"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -281,7 +268,7 @@
 
 				<!-- Fadeable text elements container -->
 				<div
-					class="w-full flex flex-col items-center justify-center transition-opacity duration-75"
+					class="landing-copy w-full flex flex-col items-center justify-center transition-opacity duration-75"
 					style="opacity: {landingOpacity};"
 				>
 					<h1
@@ -322,7 +309,7 @@
 
 			<!-- --- SECTION 2: NARRATIVE OVERLAY --- -->
 			<div
-				class="w-full flex flex-col items-center justify-center text-center transition-all duration-75 relative z-20 max-w-3xl"
+				class="story-narrative w-full flex flex-col items-center justify-center text-center transition-all duration-75 relative z-20 max-w-3xl"
 				style="opacity: {narrativeOpacity}; transform: translateY({narrativeTranslateY}px); pointer-events: {narrativeOpacity >
 				0.1
 					? 'auto'
@@ -347,7 +334,7 @@
 
 				<!-- Spec Button -->
 				<a href="/usedtech"
-					class="flex items-center gap-2 bg-primary text-on-primary hover:bg-opacity-90 active:scale-98 transition-all px-8 py-3 rounded-m3-full font-outfit font-semibold shadow-m3-elevation-2"
+					class="site-button"
 				>
 					<span aria-hidden="true" class="material-symbols-rounded"
 						>settings_suggest</span
@@ -395,7 +382,7 @@
 				<!-- Card 2: Tech Blog -->
 				<div
 					id="card-blog"
-					class="m3-card relative flex flex-col justify-between p-6 bg-surface-container rounded-m3-xl border border-outline-variant/30 transition-all duration-300 hover:shadow-m3-elevation-3 group"
+					class="site-card relative flex flex-col justify-between group"
 				>
 					<div>
 						<!-- Card Header Info -->
@@ -408,7 +395,7 @@
 								>
 							</div>
 							<span
-								class="font-mono text-xs text-secondary/80 font-bold bg-secondary/5 px-2.5 py-1 rounded-m3-sm"
+								class="font-mono text-xs text-primary-text font-bold bg-secondary/5 px-2.5 py-1 rounded-m3-sm"
 								>POSTS ({data.postCount})</span
 							>
 						</div>
@@ -432,7 +419,7 @@
 					<div class="mt-4">
 						<a
 							href="/blog"
-							class="w-full flex items-center justify-center gap-2 border-2 border-outline-variant text-secondary py-2.5 px-5 rounded-m3-full font-outfit font-semibold hover:bg-secondary/10 hover:border-secondary/30 active:scale-98 transition-all text-sm text-center decoration-none"
+							class="site-button site-button-secondary w-full"
 						>
 							<span>블로그 읽기</span>
 							<span aria-hidden="true" class="material-symbols-rounded text-base"
@@ -445,7 +432,7 @@
 				<!-- Card 3: System Status -->
 				<div
 					id="card-status"
-					class="m3-card relative flex flex-col justify-between p-6 bg-surface-container-high rounded-m3-xl border border-primary/20 shadow-m3-elevation-1 transition-all duration-300 hover:shadow-m3-elevation-3 group"
+					class="site-card relative flex flex-col justify-between group"
 				>
 					<div>
 						<!-- Card Header Info -->
@@ -545,7 +532,7 @@
 					>
 						<div class="text-left">
 							<span
-								class="text-[10px] font-outfit uppercase tracking-widest text-on-surface-variant block"
+								class="text-xs font-outfit uppercase tracking-widest text-on-surface-variant block"
 								>System Uptime</span
 							>
 							<span
@@ -568,40 +555,36 @@
 		</div>
 	</section>
 
-	<!-- Fixed Scrolling Indicator (Down Arrow) -->
+	<!-- Only shown before scrolling on the tall-screen storytelling layout. -->
+	{#if indicatorOpacity > 0}
 	<button
 		onclick={() =>
 			window.scrollBy({ top: innerHeight, behavior: "smooth" })}
-		class="fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
+		class="scroll-indicator fixed bottom-24 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary-text transition-all duration-300 bg-transparent border-none cursor-pointer"
 		style="opacity: {indicatorOpacity}; pointer-events: {indicatorOpacity >
 		0.05
 			? 'auto'
 			: 'none'};"
 	>
 		<span
-			class="font-outfit text-[10px] uppercase tracking-widest opacity-80"
+			class="font-outfit text-xs uppercase tracking-widest opacity-80"
 			>Scroll Down</span
 		>
 		<span aria-hidden="true" class="material-symbols-rounded animate-bounce text-xl mt-1"
 			>keyboard_double_arrow_down</span
 		>
 	</button>
+	{/if}
 
-	<!-- Footer -->
-	<footer
-		class="w-full bg-surface-container-lowest border-t border-outline-variant/20 py-8 px-6 text-center text-xs font-outfit text-on-surface-variant tracking-wider"
-	>
-		<p>
-			© {new Date().getFullYear()} Xheize Sandbox. All rights reserved.
-		</p>
-		<p class="mt-1 opacity-70">
-			Powered by Svelte 5 (Runes) & Tailwind CSS Dark Theme
-		</p>
-	</footer>
 </main>
 
 <style>
-	.active\:scale-98:active {
-		transform: scale(0.98);
+	#dashboard { scroll-margin-top: calc(84px + env(safe-area-inset-top)); }
+	/* Short windows and phones need natural scrolling, including browser zoom. */
+	@media (max-height: 900px), (max-width: 640px), (prefers-reduced-motion: reduce) {
+		.scroll-indicator { display: none; }
+		.story-track { height: auto; }
+		.story-stage { position: relative; height: auto; overflow: visible; overflow-x: clip; padding-top: 96px; padding-bottom: 120px; gap: 64px; }
+		.story-landing, .landing-copy, .story-narrative { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
 	}
 </style>
