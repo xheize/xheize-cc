@@ -30,6 +30,7 @@ export async function GET({ cookies, url, fetch }) {
 			},
 			body: new URLSearchParams({
 				grant_type: "authorization_code",
+				code_verifier: flow.verifier,
 				code,
 				redirect_uri: flow.redirectUri,
 			}),

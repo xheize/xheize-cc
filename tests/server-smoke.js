@@ -63,15 +63,22 @@ assert.equal(trailingSlash.headers.get('location'), '/blog');
 const { privateKey, publicKey } = await generateKeyPair('RS256');
 const publicJwk = { ...await exportJWK(publicKey), kid: 'test-key', alg: 'RS256' };
 let nonce = '';
+let challenge = '';
 let invalidMode = '';
 const originalFetch = globalThis.fetch;
-globalThis.fetch = async (/** @type {RequestInfo | URL} */ input) => {
+globalThis.fetch = async (/** @type {RequestInfo | URL} */ input, /** @type {RequestInit} */ init = {}) => {
 	const url = input instanceof Request ? input.url : String(input);
 	if (url === 'https://sso.example.test/.well-known/openid-configuration') {
 		return Response.json({ issuer: 'https://sso.example.test', authorization_endpoint: 'https://sso.example.test/authorize', token_endpoint: 'https://sso.example.test/token', userinfo_endpoint: 'https://sso.example.test/userinfo', jwks_uri: 'https://sso.example.test/jwks' });
 	}
 	if (url === 'https://sso.example.test/jwks') return Response.json({ keys: [publicJwk] });
 	if (url === 'https://sso.example.test/token') {
+		const tokenRequest = input instanceof Request ? input : new Request(input, init);
+		const params = new URLSearchParams(await tokenRequest.text());
+		const verifier = params.get('code_verifier') ?? '';
+		assert.match(verifier, /^[A-Za-z0-9_-]{43}$/);
+		const actualChallenge = Buffer.from(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))).toString('base64url');
+		assert.equal(actualChallenge, challenge, 'token exchange must prove the original PKCE challenge');
 		if (invalidMode === 'missing') return Response.json({ access_token: 'test-only-token' });
 		const idToken = await new SignJWT({ nonce: invalidMode === 'nonce' ? 'wrong' : nonce })
 			.setProtectedHeader({ alg: 'RS256', kid: 'test-key' })
@@ -90,6 +97,9 @@ try {
 	assert.equal(login.status, 303);
 	const authorization = new URL(login.headers.get('location') ?? '');
 	nonce = authorization.searchParams.get('nonce') ?? '';
+	challenge = authorization.searchParams.get('code_challenge') ?? '';
+	assert.match(challenge, /^[A-Za-z0-9_-]{43}$/);
+	assert.equal(authorization.searchParams.get('code_challenge_method'), 'S256');
 	assert.ok(nonce);
 	const flowCookie = login.headers.getSetCookie().find((cookie) => cookie.startsWith('xheize_oidc_flow='));
 	assert.ok(flowCookie);
@@ -109,6 +119,7 @@ try {
 		const start = await request('/auth/login');
 		const destination = new URL(start.headers.get('location') ?? '');
 		nonce = destination.searchParams.get('nonce') ?? '';
+		challenge = destination.searchParams.get('code_challenge') ?? '';
 		const cookie = start.headers.getSetCookie().find((value) => value.startsWith('xheize_oidc_flow='));
 		assert.ok(cookie);
 		const rejected = await request(`/auth/callback?code=test-code&state=${destination.searchParams.get('state')}`, { headers: { cookie: cookie.split(';')[0] } });

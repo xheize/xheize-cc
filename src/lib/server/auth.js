@@ -11,7 +11,7 @@ const sessionMaxAge = 60 * 60 * 8;
 const flowMaxAge = 60 * 10;
 
 /** @typedef {{ sub: string, email?: string, name?: string, picture?: string, expiresAt: number }} SessionUser */
-/** @typedef {{ state: string, nonce: string, returnTo: string, redirectUri: string, expiresAt: number }} AuthFlow */
+/** @typedef {{ state: string, nonce: string, verifier: string, returnTo: string, redirectUri: string, expiresAt: number }} AuthFlow */
 
 /** @param {Uint8Array} bytes */
 function base64url(bytes) {
@@ -106,7 +106,7 @@ export async function setAuthFlow(cookies, flow) {
 /** @param {import('@sveltejs/kit').Cookies} cookies @returns {Promise<AuthFlow | null>} */
 export async function readAuthFlow(cookies) {
 	const flow = await unseal(cookies.get(FLOW_COOKIE), "oidc-flow");
-	if (!flow || typeof flow.state !== "string" || typeof flow.nonce !== "string" || !flow.nonce || typeof flow.redirectUri !== "string" || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now()) return null;
+	if (!flow || typeof flow.verifier !== "string" || !/^[A-Za-z0-9_-]{43}$/.test(flow.verifier) || typeof flow.state !== "string" || typeof flow.nonce !== "string" || !flow.nonce || typeof flow.redirectUri !== "string" || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now()) return null;
 	return flow;
 }
 
@@ -150,6 +150,11 @@ export function isProtectedPath(pathname) {
 
 export function randomToken() {
 	return base64url(crypto.getRandomValues(new Uint8Array(32)));
+}
+
+/** @param {string} verifier */
+export async function pkceChallenge(verifier) {
+	return base64url(new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(verifier))));
 }
 
 export async function getOIDCMetadata() {
