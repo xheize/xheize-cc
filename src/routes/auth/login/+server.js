@@ -1,5 +1,5 @@
 import { error, redirect } from "@sveltejs/kit";
-import { getAuthConfig, getOIDCMetadata, randomToken, safeReturnTo, setAuthFlow } from "$lib/server/auth";
+import { getAuthConfig, getOIDCMetadata, pkceChallenge, randomToken, safeReturnTo, setAuthFlow } from "$lib/server/auth";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ cookies, url }) {
@@ -9,12 +9,14 @@ export async function GET({ cookies, url }) {
 		const { clientId } = getAuthConfig();
 		const state = randomToken();
 		const nonce = randomToken();
+		const verifier = randomToken();
 		const redirectUri = `${url.origin}/auth/callback`;
 		const returnTo = safeReturnTo(url.searchParams.get("returnTo"));
 
 		await setAuthFlow(cookies, {
 			state,
 			nonce,
+			verifier,
 			returnTo,
 			redirectUri,
 			expiresAt: Date.now() + 10 * 60 * 1000,
@@ -27,6 +29,8 @@ export async function GET({ cookies, url }) {
 		authorization.searchParams.set("scope", "openid profile email");
 		authorization.searchParams.set("state", state);
 		authorization.searchParams.set("nonce", nonce);
+		authorization.searchParams.set("code_challenge", await pkceChallenge(verifier));
+		authorization.searchParams.set("code_challenge_method", "S256");
 	} catch (cause) {
 		console.error("OIDC login initialization failed", cause);
 		error(503, "SSO 로그인 서버에 연결할 수 없습니다.");
